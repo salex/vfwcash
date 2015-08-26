@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'vfwcash'
+Vfwcash.valid_root? unless ARGV.include? 'install'
+Vfwcash::Checkbook.start( ARGV )

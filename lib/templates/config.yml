@@ -1,0 +1,91 @@
+---
+# database configuration
+:database: /Users/salex/vfw/guncash/export/vfwexport.gnucash
+:last_entry: '20150818133759'
+# GNUCash Checking and Savings account parent account
+:checking_acct: Checking Account
+:savings_acct: Savings Account
+# Trustee Audit report settings
+#   Checking Account Statement balance and outstanding
+:checking:
+  :balance: 5943627
+  :outstanding: 272557
+  :actual_balance: 
+# Post and Quartermaster information
+:qm:
+  :name: Steven V Alex
+  :address: 405 Karaway Hls
+  :city: Gadsden AL, 35901
+:post:
+  :name: Wilson Parris
+  :post: VFW Post 8600
+  :numb: 8600
+  :address: 817 Rainbow Dr
+  :city: Gadsden AL, 35901
+# Static data for building Audit form by areas
+:operations:
+  :a:
+    :ques: a. Have required payroll deductions been made?
+    :answ: 'Yes'
+  :b:
+    :ques: b. Have payments been made to the proper State & Federal agencies this
+      quarter?
+    :answ: 'Yes'
+  :c:
+    :ques: c. Have Sales Taxes been collected and paid?
+    :answ: 'Yes'
+  :d:
+    :ques: d. Are Club employees bonded?
+    :answ: 'Yes'
+  :e:
+    :ques: e. Amount of outstanding bills?
+    :answ: 0
+  :f:
+    :ques: f. Value of Real Estate?
+    :answ: 58850000
+  :g:
+    :ques: g. Amount of Liability Insurance?
+    :answ: 30000000
+  :h:
+    :ques: h. Owed on Mortgages and Loans?
+    :answ: 0
+  :i:
+    :ques: i. Value of Personal Property?
+    :answ: 4680000
+  :j:
+    :ques: j. Amount of Property Insurance?
+    :answ: 31350000
+# Submission date of audit
+:date: '2015-07-14'
+:bond:
+  :name: Tallman Insurance Agency
+  :amount: 8000000
+  :to: '2016-09-30'
+:funds:
+  1:
+    :fund: Dues
+    :text: 1. National and Department Dues (Per Capitia Tax)
+  2:
+    :fund: Fee
+    :text: 2. Admission or Application Fees (Department)
+  3:
+    :fund: General
+    :text: 3. Post General Fund
+  4:
+    :fund: Relief
+    :text: 4. Post Relief Fund (Poppy Profits, Donations, etc.)
+  5:
+    :fund: Reserve
+    :text: 5. Post Dues Reserve Fund (See Sec. 218, Manual of Procedure)
+  6:
+    :fund: Building
+    :text: 6. Post Home Building Fund (Including Savings but Not Real Estate)
+  7:
+    :fund: Cash
+    :text: 7. Post Canteen or Club Fund
+  8:
+    :fund: Dues
+    :text: 8. Temporary Fund
+  9:
+    :fund: Savings
+    :text: 9. Bonds and Investments Not Credited to Funds
