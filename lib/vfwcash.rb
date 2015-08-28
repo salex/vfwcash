@@ -69,7 +69,11 @@ module Vfwcash
       puts "Created vfw-gray.png image in config directory."
       ok = false
     end
-
+    unless File.exist?(PWD+"/config/"+"vfwcash.gnucash")
+      FileUtils.cp((LibPath+"/templates/vfwcash.gnucash"),(PWD+"/config/"+"vfwcash.gnucash"))
+      puts "Created vfwcash.gnucash db in config directory."
+      ok = false
+    end
 
     puts "No installation required" if ok
     puts "Installation complete. Edit your config.yml file to set your post information." if !ok

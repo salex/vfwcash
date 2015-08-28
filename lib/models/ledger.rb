@@ -1,13 +1,12 @@
 class Pdf::Ledger < Prawn::Document
   attr_accessor :response, :date, :cwidths
 
-  def initialize(date,ledger)
+  def initialize(date,cash)
     super( top_margin: 35, page_layout: :landscape)
     @date = Vfwcash.set_date(date).beginning_of_month
-    # ledger = Checkbook::Checking.new
-    @config = ledger.config
-    ledger.get_balances
-    @response = ledger.month_ledger_api(@date)
+    @config = cash.config
+    cash.get_balances
+    @response = cash.month_ledger_api(@date)
 
     make_pdf
     number_pages "#{Date.today}   -   Page <page> of <total>", { :start_count_at => 0, :page_filter => :all, :at => [bounds.right - 100, 0], :align => :right, :size => 6 }

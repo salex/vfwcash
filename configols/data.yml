@@ -1,0 +1,397 @@
+---
+:config:
+  :database: "/Users/salex/Work/vfwcash/lib/templates/vfwcash.gnucash"
+  :last_entry: '20150827145728'
+  :checking_acct: Checking Account
+  :savings_acct: Savings Account
+  :checking:
+    :balance: 1783700
+    :outstanding: 20000
+    :actual_balance: 
+  :qm:
+    :name: Steven V Quartermaster
+    :address: 405 Somestreet Hls
+    :city: Sometown AL, 35901
+  :post:
+    :name: Some name
+    :post: VFW Post 66666
+    :numb: 66666
+    :address: 817 somestreet Dr
+    :city: Sometown AL, 35901
+    :department: Alabama
+  :operations:
+    :a:
+      :ques: a. Have required payroll deductions been made?
+      :answ: 'Yes'
+    :b:
+      :ques: b. Have payments been made to the proper State & Federal agencies this
+        quarter?
+      :answ: 'Yes'
+    :c:
+      :ques: c. Have Sales Taxes been collected and paid?
+      :answ: 'Yes'
+    :d:
+      :ques: d. Are Club employees bonded?
+      :answ: 'Yes'
+    :e:
+      :ques: e. Amount of outstanding bills?
+      :answ: 0
+    :f:
+      :ques: f. Value of Real Estate?
+      :answ: 58850000
+    :g:
+      :ques: g. Amount of Liability Insurance?
+      :answ: 30000000
+    :h:
+      :ques: h. Owed on Mortgages and Loans?
+      :answ: 0
+    :i:
+      :ques: i. Value of Personal Property?
+      :answ: 4680000
+    :j:
+      :ques: j. Amount of Property Insurance?
+      :answ: 31350000
+  :date: '2015-07-14'
+  :bond:
+    :name: Tallman Insurance Agency
+    :amount: 8000000
+    :to: '2016-09-30'
+  :funds:
+    1:
+      :fund: Dues
+      :text: 1. National and Department Dues (Per Capitia Tax)
+    2:
+      :fund: Fee
+      :text: 2. Admission or Application Fees (Department)
+    3:
+      :fund: General
+      :text: 3. Post General Fund
+    4:
+      :fund: Relief
+      :text: 4. Post Relief Fund (Poppy Profits, Donations, etc.)
+    5:
+      :fund: Reserve
+      :text: 5. Post Dues Reserve Fund (See Sec. 218, Manual of Procedure)
+    6:
+      :fund: Building
+      :text: 6. Post Home Building Fund (Including Savings but Not Real Estate)
+    7:
+      :fund: Cash
+      :text: 7. Post Canteen or Club Fund
+    8:
+      :fund: Temporary
+      :text: 8. Temporary Fund
+    9:
+      :fund: Savings
+      :text: 9. Bonds and Investments Not Credited to Funds
+:balances:
+  General:
+    '201504':
+      :bbalance: 0
+      :diff: 1081000
+      :debits: 1361000
+      :credits: 280000
+      :ebalance: 1081000
+    '201505':
+      :bbalance: 1081000
+      :diff: -104000
+      :debits: 280000
+      :credits: 384000
+      :ebalance: 977000
+    '201506':
+      :bbalance: 977000
+      :diff: 210000
+      :debits: 480000
+      :credits: 270000
+      :ebalance: 1187000
+    '201507':
+      :bbalance: 1187000
+      :diff: 210000
+      :debits: 480000
+      :credits: 270000
+      :ebalance: 1397000
+    '201508':
+      :bbalance: 1397000
+      :diff: -23000
+      :debits: 361000
+      :credits: 384000
+      :ebalance: 1374000
+  Relief:
+    '201504':
+      :bbalance: 0
+      :diff: 510000
+      :debits: 540000
+      :credits: 30000
+      :ebalance: 510000
+    '201505':
+      :bbalance: 510000
+      :diff: 0
+      :debits: 20000
+      :credits: 20000
+      :ebalance: 510000
+    '201506':
+      :bbalance: 510000
+      :diff: 60000
+      :debits: 60000
+      :credits: 0
+      :ebalance: 570000
+    '201507':
+      :bbalance: 570000
+      :diff: 60000
+      :debits: 60000
+      :credits: 0
+      :ebalance: 630000
+    '201508':
+      :bbalance: 630000
+      :diff: 20000
+      :debits: 40000
+      :credits: 20000
+      :ebalance: 650000
+  Dues:
+    '201504':
+      :bbalance: 0
+      :diff: 6000
+      :debits: 6000
+      :credits: 0
+      :ebalance: 6000
+    '201505':
+      :bbalance: 6000
+      :diff: -6000
+      :debits: 0
+      :credits: 6000
+      :ebalance: 0
+    '201506':
+      :bbalance: 0
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 0
+    '201507':
+      :bbalance: 0
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 0
+    '201508':
+      :bbalance: 0
+      :diff: 0
+      :debits: 6000
+      :credits: 6000
+      :ebalance: 0
+  Reserve:
+    '201504':
+      :bbalance: 0
+      :diff: 6500
+      :debits: 6500
+      :credits: 0
+      :ebalance: 6500
+    '201505':
+      :bbalance: 6500
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 6500
+    '201506':
+      :bbalance: 6500
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 6500
+    '201507':
+      :bbalance: 6500
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 6500
+    '201508':
+      :bbalance: 6500
+      :diff: 1000
+      :debits: 1000
+      :credits: 0
+      :ebalance: 7500
+  Fee:
+    '201504':
+      :bbalance: 0
+      :diff: 200
+      :debits: 200
+      :credits: 0
+      :ebalance: 200
+    '201505':
+      :bbalance: 200
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 200
+    '201506':
+      :bbalance: 200
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 200
+    '201507':
+      :bbalance: 200
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 200
+    '201508':
+      :bbalance: 200
+      :diff: 200
+      :debits: 200
+      :credits: 0
+      :ebalance: 400
+  Temporary:
+    '201504':
+      :bbalance: 0
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 0
+    '201505':
+      :bbalance: 0
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 0
+    '201506':
+      :bbalance: 0
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 0
+    '201507':
+      :bbalance: 0
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 0
+    '201508':
+      :bbalance: 0
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 0
+  CD:
+    '201504':
+      :bbalance: 0
+      :diff: 977525
+      :debits: 977525
+      :credits: 0
+      :ebalance: 977525
+    '201505':
+      :bbalance: 977525
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 977525
+    '201506':
+      :bbalance: 977525
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 977525
+    '201507':
+      :bbalance: 977525
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 977525
+    '201508':
+      :bbalance: 977525
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 977525
+  Bank X Savings:
+    '201504':
+      :bbalance: 0
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 0
+    '201505':
+      :bbalance: 0
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 0
+    '201506':
+      :bbalance: 0
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 0
+    '201507':
+      :bbalance: 0
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 0
+    '201508':
+      :bbalance: 0
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 0
+  :checking:
+    '201504':
+      :bbalance: 0
+      :diff: 1603700
+      :debits: 1913700
+      :credits: 310000
+      :ebalance: 1603700
+    '201505':
+      :bbalance: 1603700
+      :diff: -110000
+      :debits: 300000
+      :credits: 410000
+      :ebalance: 1493700
+    '201506':
+      :bbalance: 1493700
+      :diff: 270000
+      :debits: 540000
+      :credits: 270000
+      :ebalance: 1763700
+    '201507':
+      :bbalance: 1763700
+      :diff: 270000
+      :debits: 540000
+      :credits: 270000
+      :ebalance: 2033700
+    '201508':
+      :bbalance: 2033700
+      :diff: -1800
+      :debits: 408200
+      :credits: 410000
+      :ebalance: 2031900
+  :savings:
+    '201504':
+      :bbalance: 0
+      :diff: 977525
+      :debits: 977525
+      :credits: 0
+      :ebalance: 977525
+    '201505':
+      :bbalance: 977525
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 977525
+    '201506':
+      :bbalance: 977525
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 977525
+    '201507':
+      :bbalance: 977525
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 977525
+    '201508':
+      :bbalance: 977525
+      :diff: 0
+      :debits: 0
+      :credits: 0
+      :ebalance: 977525

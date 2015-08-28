@@ -18,6 +18,7 @@ module Vfwcash
       end
       @date = date
       ActiveRecord::Base.logger = Logger.new(STDERR)
+      ActiveRecord::Base.logger.level = 3
       Dir.glob(File.join(LibPath,'models/*')).each do |file|
         require file
       end
@@ -28,7 +29,7 @@ module Vfwcash
       store.transaction do
         @cash = Cash.new(store)
       end
-      @cash.get_balances
+      # @cash.get_balances
     end
 
     def ledger(summary)
@@ -38,7 +39,7 @@ module Vfwcash
         pdf.render_file(filename)
       else
         pdf = Pdf::Ledger.new(@date,@cash)
-        filename = "#{PWD}/pdf/Ledger_#{Vfwcash.yyyymm(@date)}.pdf"
+        filename = "#{PWD}/pdf/ledger_#{Vfwcash.yyyymm(@date)}.pdf"
         pdf.render_file(filename)
       end
       open_pdf(filename)
@@ -47,11 +48,11 @@ module Vfwcash
     def register(split)
       if split
         pdf = Pdf::SplitLedger.new(@date,@cash)
-        filename = "#{PWD}/pdf/ledger_summary.pdf"
+        filename = "#{PWD}/pdf/split_register_#{Vfwcash.yyyymm(@date)}.pdf"
         pdf.render_file(filename)
       else
         pdf = Pdf::Register.new(@date,@cash)
-        filename = "#{PWD}/pdf/Ledger_#{Vfwcash.yyyymm(@date)}.pdf"
+        filename = "#{PWD}/pdf/register_#{Vfwcash.yyyymm(@date)}.pdf"
         pdf.render_file(filename)
       end
       open_pdf(filename)
@@ -59,14 +60,14 @@ module Vfwcash
 
     def audit
       pdf = Pdf::Audit.new(@date,@cash)
-      filename = "#{PWD}/pdf/audit.pdf"
+      filename = "#{PWD}/pdf/audit_#{Vfwcash.yyyymm(@date.beginning_of_quarter)}.pdf"
       pdf.render_file(filename)
       open_pdf(filename)
     end
 
     def balance
       pdf = Pdf::Balance.new(@date,@cash)
-      filename = "#{PWD}/pdf/summary_#{Vfwcash.yyyymm(@date)}.pdf"
+      filename = "#{PWD}/pdf/balance_#{Vfwcash.yyyymm(@date)}.pdf"
       pdf.render_file(filename)
       open_pdf(filename)
     end

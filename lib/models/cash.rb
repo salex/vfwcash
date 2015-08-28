@@ -3,21 +3,28 @@ require "yaml/store"
 module Vfwcash
 
   class Cash
+    # Cash is the primary interface to the GNUCash database
+    # The initializer sets attributes based on data in the db and from the config file
+    # that is common to all reports.
+    # Balance are computed and stored in a YAML::Store file and only updted if a new transaction
+    # is added to db.
+
+    # API calls provide informtion needed for specific reports.
+
     attr_accessor  :balances, :checking, :savings, :checking_funds,:savings_funds,
     :dates, :bmonth, :checking_acct, :savings_acct, :tmonths, :config, :store
 
      def initialize(store)
       @store = store
       @config = store[:config]
-
       @checking_acct = @config[:checking_acct]
       @savings_acct = @config[:savings_acct]
-      @checking_funds = CheckingAccount.find_by(name:@checking_acct).children.pluck(:name)
-      @savings_funds = CheckingAccount.find_by(name:@savings_acct).children.pluck(:name)
+      @checking_funds = CashAccount.find_by(name:@checking_acct).children.pluck(:name)
+      @savings_funds = CashAccount.find_by(name:@savings_acct).children.pluck(:name)
       @dates = Vfwcash.transaction_range
       set_tmonths    
     end
-
+  # COMMON Methods
     def set_tmonths
       @tmonths = []
       first = @dates.first
@@ -34,13 +41,17 @@ module Vfwcash
         last_entry = Tran.order(:enter_date).last.enter_date
         if @store[:balances].present? && last_entry <= @config[:last_entry]
           @balances = @store[:balances]
+          # puts "STORE"
         else
           get_acct_balances
           @balances[:checking] = set_parent_balance(@checking_funds)
           @balances[:savings] = set_parent_balance(@savings_funds)
           @store[:balances] = balances
           @config[:last_entry] = last_entry
+          File.open(File.join(Dir.pwd,'config/config.yml'), 'w+') {|f| f.write(@config.to_yaml)}
+          # put "LOAD"
         end
+
         @checking = @balances[:checking]
         @savings = @balances[:savings]
       end
@@ -50,7 +61,7 @@ module Vfwcash
       @balances = {}
       accts = @checking_funds + @savings_funds
       accts.each do |f|
-        acct = CheckingAccount.find_by(name:f)
+        acct = CashAccount.find_by(name:f)
         @balances[f] = acct.balances(@dates.first,@dates.last)
       end
     end
@@ -67,7 +78,7 @@ module Vfwcash
       end
       results
     end   
-
+  # REPORT Specific Methods
     def audit_api(report_date)
       date = Vfwcash.set_date(report_date)
       boq = date.beginning_of_quarter
@@ -78,9 +89,9 @@ module Vfwcash
       end
       get_balances
       yyyymm = []
-      first = Vfwcash.yyyymm(boq)
+
       0.upto(2) do |i|
-        yyyymm[i] = (first.to_i + i).to_s
+        yyyymm[i] = Vfwcash.yyyymm(boq+i.months)
       end
       rbalances = {}
       @checking_funds.each do |f|
@@ -190,9 +201,6 @@ module Vfwcash
       end
       lines
     end
-
-    # "General"=>{"201401"=>{:bbalance=>0, :diff=>1513014, :debits=>3079410, :credits=>1566396, :ebalance=>1513014}
-    # "Relief"=>{"201401"=>{:bbalance=>0, :diff=>585433, :debits=>585433, :credits=>0, :ebalance=>585433}
 
   end
 

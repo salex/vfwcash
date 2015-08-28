@@ -7,6 +7,8 @@ require 'active_support'
 module Vfwcash
 
   class Checkbook < Thor
+
+
   ######### VERSION
     desc 'version', "Print Vfwcash version"
     def version
@@ -14,14 +16,14 @@ module Vfwcash
     end
 
   ######### INSTALL
-    desc "install", "This will install configuration files"
+    desc "install", "Install configuration files and test DB in working directory"
     long_desc <<-HELLO_WORLD
 
     Install will create two directories [config,pdf]in your current working directory.
     The PDF directory will contain copies of the generated PDF reports.
     The config directory will contain a config.yml file that contains post information
     and other configuration data needed to: generate a Trustees' Report of Audit, describe
-    your accounts in GNUCash and define where your sqlite3 copy of your GNUCash data is located.
+    your accounts in GNUCash and define where the sqlite3 copy of your GNUCash data is located.
 
     HELLO_WORLD
 
@@ -30,10 +32,17 @@ module Vfwcash
     end
 
   ######### REGISTER
-    desc "register [DATE] --split", "Product checkbook register report"
+    desc "register [DATE] --split", "Checkbook register report with options"
     long_desc <<-HELLO_WORLD
 
-    produce PDF reports on the checkbook register
+    Produces a PDF reports of the checkbook register by month. All tranasaction for the month
+    are displayed, ordered by date and check number. A running balance is displayed starting with the
+    beginning balance. There is one line per transaction. Savings account transactions are displayed
+    but the amount is not added to the running balance.
+
+    The --split option displays the same information, but lines are added for each transaction showing 
+    the amount of each split by fund or income/expense account
+
 
     HELLO_WORLD
     option :split
@@ -43,12 +52,18 @@ module Vfwcash
     end
 
   ######### LEDGER
-    desc "ledger [DATE] --summary", "Product general ledger report"
+    desc "ledger [DATE] --summary", "General Ledger report with options"
     long_desc <<-HELLO_WORLD
 
-    produce PDF reports general ledger
+    Produces a PDF report of the Post's General Ledger formated much like the VFW Ledger book.
+
+    Each transaction displays tranaction information along with each fund distribution. Balances include
+    the beginning balance, total debits(increases) and credits(decreases) and ending balance.
+
+    The --summary option produces a report for all months and only contains balances.
 
     HELLO_WORLD
+
     option :summary
     def ledger( date=nil )
       bom = get_date(date)
@@ -56,22 +71,24 @@ module Vfwcash
     end
 
   ######### Audit
-    desc "audit [DATE]", "Product Trustee Audit Report "
-    long_desc <<-HELLO_WORLD
+    desc "audit [DATE]", "Trustee Audit Report "
+     long_desc <<-HELLO_WORLD
 
-    Product Trustee Audit Report
+     Productes a Trustee Audit Report for the ending quarter that ended before
+     the date enter. If date is not ended, it will be the last report.
 
-    HELLO_WORLD
+     HELLO_WORLD
+
     def audit( date=nil )
       bom = get_date(date)
       Controller.new(bom).audit
     end
 
   ######### Balance
-    desc "balance [DATE]", "Product Monthly Fund Balance "
+    desc "balance [DATE]", "Monthly Fund Balance Summary "
     long_desc <<-HELLO_WORLD
 
-    Product Monthly Fund Balance
+    Product Monthly Fund Balance summay for only one month in a compact format.
 
     HELLO_WORLD
     def balance( date=nil )
@@ -79,6 +96,20 @@ module Vfwcash
       Controller.new(bom).balance
     end
 
+    desc "dates", "Date formats and information"
+    long_desc <<-DATE_HELP
+    The DATE parameter is optional (unless a --option is entered) and will default to the current date.
+
+    All dates will be converted to the first of the month requardless of the date entered.
+
+    Entered dates are parsed using Chronic (https://github.com/mojombo/chronic).
+    Chronic provide a wide range options.
+
+    Probably the easiest option is the yyyy-mm format (again day is optional)
+    DATE_HELP
+    def dates
+      puts "Happy Dating"
+    end
 
 
     private

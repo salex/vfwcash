@@ -1,14 +1,13 @@
 module Pdf
 class Audit < Prawn::Document
   attr_accessor :cur, :config, :balances
-  def initialize(date,ledger)
+  def initialize(date,cash)
     super( top_margin: 35)
     @date = Vfwcash.set_date(date).beginning_of_month
     @layout = {top:bounds.height.to_i,right:bounds.width.to_i,left:0,bottom:0,cursor:cursor}
-    @config = ledger.config
-
-    ledger.get_balances
-    @balances = ledger.audit_api(@date)
+    @config = cash.config
+    cash.get_balances
+    @balances = cash.audit_api(@date)
     make_pdf
   end
 
@@ -43,10 +42,9 @@ class Audit < Prawn::Document
   end
 
   def report
-    p @balances[:dates]
     bounding_box([70, @cur], :width => @layout[:right] - 70, :height => 50) do
       text_box "The Books and Records of the Quartermaster and Adjutant of:     <strong><u>#{@config[:post][:name]}  -  #{@config[:post][:post]}</u></strong>", at:[30,50], inline_format:true
-      text_box "Department of <strong><u> Alabama </u></strong> for Fiscal Quarter ending:     <strong><u>#{@balances[:dates][:eoq]}</u></strong>", at:[30,35], inline_format:true
+      text_box "Department of <strong><u> #{@config[:post][:department]} </u></strong> for Fiscal Quarter ending:     <strong><u>#{@balances[:dates][:eoq]}</u></strong>", at:[30,35], inline_format:true
       text_box "Fiscal Quarter    <strong><u>#{@balances[:dates][:boq]} to #{@balances[:dates][:eoq]}</u></strong>", at:[30,20], inline_format:true
 
     end
@@ -72,11 +70,13 @@ class Audit < Prawn::Document
       bb = @eb = cr = db = 0
       @config[:funds].each do |f,v|
         bal = @balances[v[:fund]]
-        bb += bal[:bbalance]
-        @eb += bal[:ebalance]
-        db += bal[:debits]
-        cr += bal[:credits]
-        rows << [v[:text], money(bal[:bbalance]),money(bal[:debits]),money(bal[:credits]),money(bal[:ebalance])]
+        if bal.present?
+          bb += bal[:bbalance]
+          @eb += bal[:ebalance]
+          db += bal[:debits]
+          cr += bal[:credits]
+          rows << [v[:text], money(bal[:bbalance]),money(bal[:debits]),money(bal[:credits]),money(bal[:ebalance])]
+        end
       end
       rows << [' ',nil,nil,nil,nil]
       rows << ['10.  Total',money(bb),money(db),money(cr),"(15)    " + money(@eb)]

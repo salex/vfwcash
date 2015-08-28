@@ -1,5 +1,5 @@
 ---
-:database: "/Users/salex/Work/vfwcash/config/vfwcash.gnucash"
+:database: "/Users/salex/Work/vfwcash/lib/templates/vfwcash.gnucash"
 :last_entry: '20150827145728'
 :checking_acct: Checking Account
 :savings_acct: Savings Account

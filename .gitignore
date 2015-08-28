@@ -11,4 +11,7 @@
 *.so
 *.o
 *.a
+*.log
+/config/
+/pdf/
 mkmf.log

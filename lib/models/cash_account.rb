@@ -1,5 +1,5 @@
 
-class CheckingAccount < ActiveRecord::Base
+class CashAccount < ActiveRecord::Base
   self.table_name = "accounts"
 
   self.primary_key = 'guid'
@@ -7,11 +7,11 @@ class CheckingAccount < ActiveRecord::Base
   has_many :trans, through: :splits
 
   def parent
-    CheckingAccount.find(self.parent_guid)
+    CashAccount.find(self.parent_guid)
   end
 
   def children
-    CheckingAccount.where(parent_guid:self.guid)
+    CashAccount.where(parent_guid:self.guid)
   end
 
   def balance(decimal=true)
