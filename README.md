@@ -46,7 +46,7 @@ Or work with the development version:
 
 ## Usage
 
-I will write a wiki documentation at some point on how to set up GnuCash at some point, but for
+I will write a wiki documentation on how to set up GnuCash at some point, but for
 now the vfwcash install command will install a small sqlite3 database in the config directory that
 only contains a few transactions for the months April through August of 2015.  You don't need GnuCash 
 installed to use the CLI, unless you want to add transactions.
@@ -54,15 +54,15 @@ installed to use the CLI, unless you want to add transactions.
 You must edit the config/config.yml file after installed and set the absolute path to the sqlite3 database.
 
 GunCash's default data format is XML, but there is an option to use sqlite3 in the default download. I used the
-XML version because of a built-in backup scheme. I then export my date to sqlite3 and use that database for reporting.
-VFWCash is read-only to the database so it could use the primary db, but that brings up single-user problems (GnuCash implementation)
+XML version because of a built-in backup scheme. I then Save As sqlite3 to create a copy of the database for reporting.
+VFWCash database is read-only so it could use the primary db, but that brings up single-user problems (GnuCash implementation)
 
 Once installed and configured, `vwfcash help` will display:
 
     Commands:
       vfwcash audit [DATE]             # Trustee Audit Report 
       vfwcash balance [DATE]           # Monthly Fund Balance Summary 
-      vfwcash dates                    # Date formats and information
+      vfwcash dates                    # Date formats and information (help dates)
       vfwcash help [COMMAND]           # Describe available commands or one specific command
       vfwcash install                  # Install configuration files and test DB in working directory
       vfwcash ledger [DATE] --summary  # General Ledger report with options
