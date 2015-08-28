@@ -28,6 +28,7 @@ git git@github.com:salex/Assessable.git
 ```
 
 And then execute:
+
     $ cd vfwcash
     $ rake build
     $ rake install
@@ -37,6 +38,7 @@ And then execute:
     $ vfwcash install
 
 Or work with the development version:
+
     $ cd vfwcash
     $ bundle
     $ bundle exec bin/vfwcash help
@@ -70,11 +72,11 @@ Once installed and configured, `vwfcash help` will display:
 There are 4 basic reports with some options
 
 *  register
-**  A checkbook like register with transactions by date and number, single line, no splits
-**  --split option, same as register but with all splits (there will be at least two) diplayed
+  *  A checkbook like register with transactions by date and number, single line, no splits
+  *  --split option, same as register but with all splits (there will be at least two) diplayed
 *  ledger
-**  A general ledger book version by date and number with a debit/credit column for each fund account
-**  --summary display summary balances only for all months
+  *  A general ledger book version by date and number with a debit/credit column for each fund account
+  *  --summary display summary balances only for all months
 *  Audit - Produces a PDF version of VFW Form:  Trustees Audit Report (sumarizes tranactions by quarter)
 * balance - Produces a summary of fund balances for a single month.
 
