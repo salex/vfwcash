@@ -1,4 +1,4 @@
- # VFWcash
+# VFWcash
 
 A beta version of a Ruby Command Line gem that generates VFW formated reports(pdf) from a GnuCash book.
 
@@ -14,10 +14,9 @@ interface to the GnuCash data.
 The GnuCash was set up to use the VFW's version of Fund Based Accounting. This became fairly simple and
 I thought it could be used by any Post or any organization that uses fund based accounting (most non-profit organizations)
 
-I felt I could share my work, but I work on a Mac and setting up Rails on Windows would probably be more than most VFW
-users could handle.  Setting up Ruby on Windows is fairly straight forward (http://rubyinstaller.org) and so decided to
+I wanted to share my work, but I work on a Mac and setting up Rails on Windows would probably be more than most VFW
+users could handle.  Setting up Ruby on Windows is fairly straight forward (http://rubyinstaller.org) and so I decided to
 write a command line interface to the models and Prawn PDF reports I had developed. Hopefully I can document how to use the CLI.
-
 
 ## Installation
 
@@ -35,18 +34,21 @@ And then execute:
     $ mkdir ~./some_rails_like_app_directory
     $ cd ~./some_rails_like_app_directory
     $ vfwcash help
-    $ vfwcash install
+    $ vfwcash install -db
 
 Or work with the development version:
 
     $ cd vfwcash
     $ bundle
     $ bundle exec bin/vfwcash help
-    $ bundle exec bin/vfwcash install
+      -> commands
+    $ bundle exec bin/vfwcash help install
+      -> install help
+    $ bundle exec bin/vfwcash install -db
 
 ## Usage
 
-I will write a wiki documentation on how to set up GnuCash at some point, but for
+I will write wiki documentation on how to set up GnuCash at some point, but for
 now the vfwcash install command will install a small sqlite3 database in the config directory that
 only contains a few transactions for the months April through August of 2015.  You don't need GnuCash 
 installed to use the CLI, unless you want to add transactions.
@@ -54,31 +56,35 @@ installed to use the CLI, unless you want to add transactions.
 You must edit the config/config.yml file after it is installed and set the absolute path to the sqlite3 database.
 
 GunCash's default data format is XML, but there is an option to use sqlite3 in the default download (Postgresql or Mysql if you want to roll your own). I use the
-XML version because of a built-in backup scheme. I then `Save As` to sqlite3 to create a copy of the database for reporting.
-VFWCash database is read-only so it could use the primary db, but that brings up single-user problems (GnuCash implementation)
+XML version because of a built-in backup scheme. I then `Save As` to create a sqlite3 copy of the database for reporting.
+The VFWCash database is read-only so it could use it to point to the primary db, but that brings up single-user problems (GnuCash implementation)
 
 Once installed and configured, `vwfcash help` will display:
 
     Commands:
-      vfwcash audit [DATE]             # Trustee Audit Report 
-      vfwcash balance [DATE]           # Monthly Fund Balance Summary 
-      vfwcash dates                    # Date formats and information (help dates)
-      vfwcash help [COMMAND]           # Describe available commands or one specific command
-      vfwcash install                  # Install configuration files and test DB in working directory
-      vfwcash ledger [DATE] --summary  # General Ledger report with options
-      vfwcash register [DATE] --split  # Checkbook register report with options
-      vfwcash version                  # Print VFWcash version
+      vfwcash --dates, -d         # print date format options
+      vfwcash --version, -v       # print the version
+      vfwcash audit [DATE]        # Trustee Audit Report 
+      vfwcash balance [DATE]      # Monthly Fund Balance Summary 
+      vfwcash help [COMMAND]      # Describe available commands or one specific command
+      vfwcash install --dir --db  # Install config files and optional test DB in pwd or pwd/--dir
+      vfwcash ledger [DATE]       # General Ledger report by month
+      vfwcash register [DATE]     # Checkbook register report
+      vfwcash split [DATE]        # Checkbook split register report
+      vfwcash summary [DATE]      # General Ledger Summary Report
 
-There are 4 basic reports with some options
+There are 6 basic reports derived from GnuCash accounts, transactions and splits
 
 * register
   * A checkbook like register with transactions by date and number, single line, no splits
-  * The --split option is about same as register but with all splits (there will be at least two) displayed
+* split
+  * The same as register but with all splits (there will be at least two) displayed on a separate line
 * ledger
-  * A general ledger book version by date and number with a debit/credit column for each fund account
-  * The --summary display summary balances only for all months
-* audit - Produces a PDF version of VFW Form:  Trustees Audit Report (sumarizes transactions by quarter)
-* balance - Produces a summary of fund balances for a single month.
+  * A general ledger by date and number with a debit/credit column for each fund account, with starting and ending balances, summed credits and debits for the month
+* summary
+  * A general ledger by month but display only summary balances, debits and credits
+* audit - Produces a PDF version of VFW Form:  Trustees Audit Report (summarizes transactions by quarter)
+* balance - Like the summary command, but only produces a summary of fund balances, debits and credits for a single month in a compact format.
 
 ## Contributing
 

@@ -48,10 +48,10 @@ module Vfwcash
           @balances[:savings] = set_parent_balance(@savings_funds)
           @store[:balances] = balances
           @config[:last_entry] = last_entry
+          # Update last_entry and save the config.yml file
           File.open(File.join(Dir.pwd,'config/config.yml'), 'w+') {|f| f.write(@config.to_yaml)}
-          # put "LOAD"
+          # puts "LOAD"
         end
-
         @checking = @balances[:checking]
         @savings = @balances[:savings]
       end

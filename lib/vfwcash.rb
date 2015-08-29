@@ -47,32 +47,45 @@ module Vfwcash
     end
   end
 
-  def self.install
+  def self.install(options)
+    wd = PWD
     ok = true
-    unless Dir.exist?(PWD+'/config')
-      Dir.mkdir(PWD+'/config')
-      puts "Created config directory in #{PWD}"
+    if options['dir'].present?
+      unless Dir.exist?(wd+options['dir'])
+        Dir.mkdir(wd+'/'+options['dir'])
+        puts "Created a new directory in #{wd}"
+        ok = false
+        Dir.chdir(wd+'/'+options['dir'])
+        wd = Dir.pwd
+      end
+    end
+
+    unless Dir.exist?(wd+'/config')
+      Dir.mkdir(wd+'/config')
+      puts "Created config directory in #{wd}"
       ok = false
     end
-    unless Dir.exist?(PWD+'/pdf')
-      Dir.mkdir(PWD+'/pdf')
-      puts "Created pdf directory in #{PWD}"
+    unless Dir.exist?(wd+'/pdf')
+      Dir.mkdir(wd+'/pdf')
+      puts "Created pdf directory in #{wd}"
       ok = false
     end
-    unless File.exist?(PWD+"/config/"+"config.yml")
-      FileUtils.cp((LibPath+"/templates/config.yml"),(PWD+"/config/"+"config.yml"))
+    unless File.exist?(wd+"/config/"+"config.yml")
+      FileUtils.cp((LibPath+"/templates/config.yml"),(wd+"/config/"+"config.yml"))
       puts "Created config.yml file in config directory, must be edited for your post."
       ok = false
     end
-    unless File.exist?(PWD+"/config/"+"vfw-gray.png")
-      FileUtils.cp((LibPath+"/templates/vfw-gray.png"),(PWD+"/config/"+"vfw-gray.png"))
+    unless File.exist?(wd+"/config/"+"vfw-gray.png")
+      FileUtils.cp((LibPath+"/templates/vfw-gray.png"),(wd+"/config/"+"vfw-gray.png"))
       puts "Created vfw-gray.png image in config directory."
       ok = false
     end
-    unless File.exist?(PWD+"/config/"+"vfwcash.gnucash")
-      FileUtils.cp((LibPath+"/templates/vfwcash.gnucash"),(PWD+"/config/"+"vfwcash.gnucash"))
-      puts "Created vfwcash.gnucash db in config directory."
-      ok = false
+    if options['db']
+      unless File.exist?(wd+"/config/"+"vfwcash.gnucash")
+        FileUtils.cp((LibPath+"/templates/vfwcash.gnucash"),(wd+"/config/"+"vfwcash.gnucash"))
+        puts "Created vfwcash.gnucash db in config directory."
+        ok = false
+      end
     end
 
     puts "No installation required" if ok
