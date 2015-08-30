@@ -35,7 +35,7 @@ module Vfwcash
      end
 
   ######### INSTALL
-    desc "install --dir --db", "Install config files and optional test DB in pwd or pwd/--dir"
+    desc "install [--dir --db]", "Install config files and optional test DB in pwd or pwd/--dir"
     long_desc <<-HELLO_WORLD
 
     Install will create two directories [config,pdf]in your current working directory.
@@ -50,8 +50,9 @@ module Vfwcash
 
     HELLO_WORLD
     method_option :dir, type: :string,
-                           desc: "Create a new directory"
-    method_option :testdb, type: :boolean,
+                           desc: "Create a new directory",
+                           required: false
+    method_option :db, type: :boolean,
                            default: false,
                            desc: "Copy a Test GnuCash Database to the config directory"
 
@@ -156,22 +157,6 @@ module Vfwcash
       bom = get_date(date)
       Controller.new(bom).balance
     end
-
-    # desc "dates", "Date formats and information"
-    # long_desc <<-DATE_HELP
-    # The DATE parameter is optional (unless a --option is entered) and will default to the current date.
-
-    # All dates will be converted to the first of the month requardless of the date entered.
-
-    # Entered dates are parsed using Chronic (https://github.com/mojombo/chronic).
-    # Chronic provide a wide range options.
-
-    # Probably the easiest option is the yyyy-mm format (again day is optional)
-    # DATE_HELP
-    # def dates
-    #   puts "Happy Dating"
-    # end
-
 
     private
 
