@@ -23,7 +23,7 @@ write a command line interface to the models and Prawn PDF reports I had develop
 The gem has not been uploaded to Ruby Gems yet, but you can install it locally by cloning vfwcash
 
 ```ruby
-git git@github.com:salex/Assessable.git 
+git git@github.com:salex/vfwcash.git 
 ```
 
 And then execute:
@@ -48,8 +48,8 @@ Or work with the development version:
 
 ## Usage
 
-I will write wiki documentation on how to set up GnuCash at some point, but for
-now the vfwcash install command with a --db option will install a small sqlite3 database in the config directory that
+The Wiki has brief documentation on how to set up GnuCash for fund based accounting, but for
+now the vfwcash install command with a --db option will install a small sqlite3 database in the config directory, That db
 only contains a few transactions for the months April through August of 2015.  You don't need GnuCash 
 installed to use the CLI, unless you want to add transactions.
 
