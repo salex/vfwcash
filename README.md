@@ -11,8 +11,8 @@ required.
 I was not about to use a paper ledger and decided to use GnuCash (http://gnucash.org) several years ago. GnuCash is a full fledged double entry accounting system somewhere between Quicken and Quickbooks and it's free!
 I had developed a Rails Web Based system to help me with my Quartermaster tasks, but is was fairly customized, including my
 interface to the GnuCash data.
-The GnuCash was set up to use the VFW's version of Fund Based Accounting. This became fairly simple and
-I thought it could be used by any Post or any organization that uses fund based accounting (most non-profit organizations)
+GnuCash was set up to use the VFW's version of Fund Based Accounting. This became fairly simple and
+could be used by any Post or any organization that uses fund based accounting (most non-profit organizations)
 
 I wanted to share my work, but I work on a Mac and setting up Rails on Windows would probably be more than most VFW
 users could handle.  Setting up Ruby on Windows is fairly straight forward (http://rubyinstaller.org) and so I decided to
@@ -49,15 +49,15 @@ Or work with the development version:
 ## Usage
 
 I will write wiki documentation on how to set up GnuCash at some point, but for
-now the vfwcash install command will install a small sqlite3 database in the config directory that
+now the vfwcash install command with a --db option will install a small sqlite3 database in the config directory that
 only contains a few transactions for the months April through August of 2015.  You don't need GnuCash 
 installed to use the CLI, unless you want to add transactions.
 
 You must edit the config/config.yml file after it is installed and set the absolute path to the sqlite3 database.
 
-GunCash's default data format is XML, but there is an option to use sqlite3 in the default download (Postgresql or Mysql if you want to roll your own). I use the
-XML version because of a built-in backup scheme. I then `Save As` to create a sqlite3 copy of the database for reporting.
-The VFWCash database is read-only so it could use it to point to the primary db, but that brings up single-user problems (GnuCash implementation)
+GunCash's default data format is XML, but there is an option to use a sqlite3 database in the default download (Postgresql or Mysql if you want to roll your own). I still use the
+XML version because of a built-in backup scheme. Since I'm only concerned with reports a few times a month, I use `Save As` to create a sqlite3 copy of the database for reporting.
+The VFWCash database is read-only so it could point to the primary db, but that brings up single-user problems (GnuCash implementation)
 
 Once installed and configured, `vwfcash help` will display:
 
@@ -73,18 +73,21 @@ Once installed and configured, `vwfcash help` will display:
       vfwcash split [DATE]        # Checkbook split register report
       vfwcash summary [DATE]      # General Ledger Summary Report
 
-There are 6 basic reports derived from GnuCash accounts, transactions and splits
+There are 6 basic reports derived from GnuCash accounts, transactions and splits. You can view examples
+of these reports in the folder [`pdf_examples`](https://github.com/salex/vfwcash/tree/master/pdf_examples) on github
 
 * register
-  * A checkbook like register with transactions by date and number, single line, no splits
+  * A checkbook like register with transactions by date and number/ Single line summarizing transaction, no splits
 * split
   * The same as register but with all splits (there will be at least two) displayed on a separate line
 * ledger
-  * A general ledger by date and number with a debit/credit column for each fund account, with starting and ending balances, summed credits and debits for the month
+  * A general ledger by date and number with a debit/credit column for each fund account. The report includes starting and ending balances, and summed credits and debits for the month
 * summary
-  * A general ledger by month but display only summary balances, debits and credits
-* audit - Produces a PDF version of VFW Form:  Trustees Audit Report (summarizes transactions by quarter)
-* balance - Like the summary command, but only produces a summary of fund balances, debits and credits for a single month in a compact format.
+  * A general ledger by month but only displays summary balances, debits and credits
+* audit
+  * Produces a PDF version of VFW Form:  Trustees Audit Report (summarizes transactions by quarter)
+* balance
+  * Like the summary command, but only produces a summary of fund balances, debits and credits for a single month in a compact format.
 
 ## Contributing
 
