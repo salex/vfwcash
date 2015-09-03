@@ -36,6 +36,13 @@ module Vfwcash
       end
     end
 
+    def between(from,to)
+      pdf = Pdf::Between.new(@date,@cash,from,to)
+      filename = "#{PWD}/pdf/between_#{from}_#{to}.pdf"
+      pdf.render_file(filename)
+      open_pdf(filename)
+    end
+
     def ledger
       pdf = Pdf::Ledger.new(@date,@cash)
       filename = "#{PWD}/pdf/ledger_#{Vfwcash.yyyymm(@date)}.pdf"

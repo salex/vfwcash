@@ -23,6 +23,12 @@ class CashAccount < ActiveRecord::Base
     end
   end
 
+  def balance_on(date)
+    sp = self.splits.joins(:tran).where('transactions.post_date < ?',date.strftime('%Y%m%d')+'00')
+    b = sp.sum(:value_num)
+  end
+
+
   def balances(first=nil,last=nil)
     if first.nil?
       trange = Vfwcash.transaction_range
@@ -45,6 +51,17 @@ class CashAccount < ActiveRecord::Base
       curr += 1.month
     end
     return results
+  end
+
+  def balances_between(first,last)
+    fdate = first.strftime('%Y%m%d')+'00'
+    ldate = last.strftime('%Y%m%d')+'24'
+    bb = self.balance_on(first)
+    sp = splits_by_month(fdate,ldate)
+    credits = sp.where('value_num < ?',0).sum(:value_num)
+    debits = sp.where('value_num >= ?', 0).sum(:value_num)
+    diff = debits + credits
+    results = {bbalance:bb,diff:diff,debits:debits,credits:credits * -1,ebalance:bb+diff}
   end
 
   def splits_by_month(bom,eom)

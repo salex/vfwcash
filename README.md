@@ -8,19 +8,21 @@ VFW Quartermasters are required to keep Post accounting books. Procedures only a
 This is fine for a small Post that only writes a few checks a month. Automated ledgers are allowed, but paper backup is 
 required.
 
-I was not about to use a paper ledger and decided to use GnuCash (http://gnucash.org) several years ago. GnuCash is a full fledged double entry accounting system somewhere between Quicken and Quickbooks and it's free!
+I was not about to use a paper ledger and decided to use GnuCash (http://gnucash.org) several years ago. GnuCash is a full fledged double entry accounting system somewhere between Quicken and Quickbooks and it's free! 
 I had developed a Rails Web Based system to help me with my Quartermaster tasks, but is was fairly customized, including my
 interface to the GnuCash data.
 GnuCash was set up to use the VFW's version of Fund Based Accounting. This became fairly simple and
 could be used by any Post or any organization that uses fund based accounting (most non-profit organizations)
+I'll point out that we do not use
+GnuCash as our main accounting system, although we could.  We have an Accountant that handles mainly payroll and taxes and we send them the information they need (in reports or source documents). Then they send us information we need. We basically use it as a checkbook, fund manager and enter stuff from the accountant (payroll checks, eft or forms to pay taxes etc). I also summarize income and expense from our customized post management system (sales, donations, etc).
 
 I wanted to share my work, but I work on a Mac and setting up Rails on Windows would probably be more than most VFW
 users could handle.  Setting up Ruby on Windows is fairly straight forward (http://rubyinstaller.org) and so I decided to
-write a command line interface to the models and Prawn PDF reports I had developed. Hopefully I can document how to use the CLI.
+write a command line interface to the models and Prawn PDF reports I had developed. Hopefully I can document how to use the CLI on Windows, if I can remember how to use Windows!
 
 ## Installation
 
-The gem has not been uploaded to Ruby Gems yet, but you can install it locally by cloning vfwcash
+The gem has not been uploaded to Ruby Gems during beta testing, but you can install it locally by cloning vfwcash
 
 ```ruby
 git git@github.com:salex/vfwcash.git 
@@ -57,7 +59,7 @@ You must edit the config/config.yml file after it is installed and set the absol
 
 GunCash's default data format is XML, but there is an option to use a sqlite3 database in the default download (Postgresql or Mysql if you want to roll your own). I still use the
 XML version because of a built-in backup scheme. Since I'm only concerned with reports a few times a month, I use `Save As` to create a sqlite3 copy of the database for reporting.
-The VFWCash database is read-only so it could point to the primary db, but that brings up single-user problems (GnuCash implementation)
+The VFWCash database is read-only so it could point to the primary db, but that brings up single-user problems (GnuCash implementation) that locks the db to a single user.
 
 Once installed and configured, `vwfcash help` will display:
 
@@ -65,7 +67,8 @@ Once installed and configured, `vwfcash help` will display:
       vfwcash --dates, -d         # print date format options
       vfwcash --version, -v       # print the version
       vfwcash audit [DATE]        # Trustee Audit Report 
-      vfwcash balance [DATE]      # Monthly Fund Balance Summary 
+      vfwcash balance [DATE]      # Monthly Fund Balance Summary
+      vfwcash between date1 date2   # Get balances between two dates
       vfwcash help [COMMAND]      # Describe available commands or one specific command
       vfwcash install --dir --db  # Install config files and optional test DB in pwd or pwd/--dir
       vfwcash ledger [DATE]       # General Ledger report by month
@@ -73,7 +76,7 @@ Once installed and configured, `vwfcash help` will display:
       vfwcash split [DATE]        # Checkbook split register report
       vfwcash summary [DATE]      # General Ledger Summary Report
 
-There are 6 basic reports derived from GnuCash accounts, transactions and splits. You can view examples
+There are 7 basic reports derived from GnuCash accounts, transactions and splits. You can view examples
 of these reports in the folder [`pdf_examples`](https://github.com/salex/vfwcash/tree/master/pdf_examples) on github
 
 * register
@@ -83,11 +86,13 @@ of these reports in the folder [`pdf_examples`](https://github.com/salex/vfwcash
 * ledger
   * A general ledger by date and number with a debit/credit column for each fund account. The report includes starting and ending balances, and summed credits and debits for the month
 * summary
-  * A general ledger by month but only displays summary balances, debits and credits
+  * A general ledger for all months in db, but only displays summary balances, debits and credits by month.
 * audit
   * Produces a PDF version of VFW Form:  Trustees Audit Report (summarizes transactions by quarter)
 * balance
   * Like the summary command, but only produces a summary of fund balances, debits and credits for a single month in a compact format.
+* between
+  * Same format as balance, but produces a summary between two dates. 
 
 ## Contributing
 

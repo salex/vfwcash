@@ -79,6 +79,16 @@ module Vfwcash
       results
     end   
   # REPORT Specific Methods
+    def between_balance(from,to)
+      between = {}
+      accts = @checking_funds + @savings_funds
+      accts.each do |f|
+        acct = CashAccount.find_by(name:f)
+        between[f] = acct.balances_between(from,to)
+      end
+      between
+    end
+
     def audit_api(report_date)
       date = Vfwcash.set_date(report_date)
       boq = date.beginning_of_quarter

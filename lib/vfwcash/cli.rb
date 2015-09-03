@@ -26,6 +26,16 @@ module Vfwcash
         DATE_HELP
     end
 
+  desc "between date1 date2", "Get balances between two dates"
+
+  def between(first, last)
+    sdate = get_date(first)
+    edate = get_date(last)
+    bom = sdate - sdate.day + 1
+    Controller.new(bom).between(sdate,edate)
+  end
+
+
   ######### VERSION
     map %w[--version -v] => :__print_version
 
