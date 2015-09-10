@@ -36,6 +36,40 @@ module Vfwcash
       end
     end
 
+    def get_fund_balances(bdate,edate)
+      xbal = {}
+      xbal[:checking] =  {bbalance:0,diff:0,debits:0,credits:0,ebalance:0}
+      xbal[:savings] =  {bbalance:0,diff:0,debits:0,credits:0,ebalance:0}
+      accts = @checking_funds + @savings_funds
+      accts.each do |f|
+        acct = CheckingAccount.find_by(name:f)
+        xbal[f] = balances_between(acct,bdate,edate)
+        if @checking_funds.include?(f)
+          sum_from_to(xbal[f],xbal[:checking])
+        else
+          sum_from_to(xbal[f],xbal[:savings])
+        end
+      end
+     end
+
+    def balances_between(acct,first,last)
+      fdate = first.strftime('%Y%m%d')+'00'
+      ldate = last.strftime('%Y%m%d')+'24'
+      bb = acct.balance_on(first)
+      sp = acct.splits.joins(:tran).where('transactions.post_date between ? and ?',fdate,ldate)
+      credits = sp.where('value_num < ?',0).sum(:value_num)
+      debits = sp.where('value_num >= ?', 0).sum(:value_num)
+      diff = debits + credits
+      results = {bbalance:bb,diff:diff,debits:debits,credits:credits * -1,ebalance:bb+diff}
+    end
+
+    def sum_from_to(ffund,tfund)
+      ffund.each do |k,v|
+        tfund[k] += v
+      end
+    end
+
+
     def get_balances
       @store.transaction do
         last_entry = Tran.order(:enter_date).last.enter_date
