@@ -1,6 +1,7 @@
 require "vfwcash/version"
 require 'vfwcash/cli'
 require 'vfwcash/controller'
+require 'vfwcash/api'
 
 module Vfwcash
   # Your code goes here...

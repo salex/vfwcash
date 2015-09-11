@@ -6,7 +6,7 @@ class Pdf::Balance < Prawn::Document
     @date = Vfwcash.set_date(date).beginning_of_month
     @m = Vfwcash.yyyymm(@date)
     @cash = cash
-    @cash.get_balances
+    cash.get_fund_balances(@date,@date.end_of_month)
     @config = @cash.config
     make_pdf
     number_pages "#{Date.today}   -   Page <page> of <total>", { :start_count_at => 0, :page_filter => :all, :at => [bounds.right - 100, 0], :align => :right, :size => 6 }
@@ -18,21 +18,21 @@ class Pdf::Balance < Prawn::Document
 
   def checking_row
     arr = ["Checking"]
-    arr << {content: money(@cash.balances[:checking][@m][:bbalance]), align: :right}
-    arr << {content: money(@cash.balances[:checking][@m][:debits]), align: :right}
-    arr << {content: money(@cash.balances[:checking][@m][:credits]), align: :right}
-    arr << {content: money(@cash.balances[:checking][@m][:diff]), align: :right}
-    arr << {content: money(@cash.balances[:checking][@m][:ebalance]), align: :right}
+    arr << {content: money(@cash.balances[:checking][:bbalance]), align: :right}
+    arr << {content: money(@cash.balances[:checking][:debits]), align: :right}
+    arr << {content: money(@cash.balances[:checking][:credits]), align: :right}
+    arr << {content: money(@cash.balances[:checking][:diff]), align: :right}
+    arr << {content: money(@cash.balances[:checking][:ebalance]), align: :right}
     arr
   end
 
   def savings_row
     arr = ["Savings"]
-    arr << {content: money(@cash.balances[:savings][@m][:bbalance]), align: :right}
-    arr << {content: money(@cash.balances[:savings][@m][:debits]), align: :right}
-    arr << {content: money(@cash.balances[:savings][@m][:credits]), align: :right}
-    arr << {content: money(@cash.balances[:savings][@m][:diff]), align: :right}
-    arr << {content: money(@cash.balances[:savings][@m][:ebalance]), align: :right}
+    arr << {content: money(@cash.balances[:savings][:bbalance]), align: :right}
+    arr << {content: money(@cash.balances[:savings][:debits]), align: :right}
+    arr << {content: money(@cash.balances[:savings][:credits]), align: :right}
+    arr << {content: money(@cash.balances[:savings][:diff]), align: :right}
+    arr << {content: money(@cash.balances[:savings][:ebalance]), align: :right}
     arr
   end
 
@@ -40,11 +40,11 @@ class Pdf::Balance < Prawn::Document
     farr = []
     @cash.checking_funds.each do |f|
       arr = [f]
-      arr << {content: money(@cash.balances[f][@m][:bbalance]), align: :right}
-      arr << {content: money(@cash.balances[f][@m][:debits]), align: :right}
-      arr << {content: money(@cash.balances[f][@m][:credits]), align: :right}
-      arr << {content: money(@cash.balances[f][@m][:diff]), align: :right}
-      arr << {content: money(@cash.balances[f][@m][:ebalance]), align: :right}
+      arr << {content: money(@cash.balances[f][:bbalance]), align: :right}
+      arr << {content: money(@cash.balances[f][:debits]), align: :right}
+      arr << {content: money(@cash.balances[f][:credits]), align: :right}
+      arr << {content: money(@cash.balances[f][:diff]), align: :right}
+      arr << {content: money(@cash.balances[f][:ebalance]), align: :right}
       farr << arr
     end
     farr
@@ -52,11 +52,11 @@ class Pdf::Balance < Prawn::Document
 
   def curr_assets_row
     arr = ["Curr Assets"]
-    arr << {content: money(@cash.balances[:checking][@m][:bbalance] + @cash.balances[:savings][@m][:bbalance]), align: :right}
-    arr << {content: money(@cash.balances[:checking][@m][:debits] + @cash.balances[:savings][@m][:debits]), align: :right}
-    arr << {content: money(@cash.balances[:checking][@m][:credits] + @cash.balances[:savings][@m][:credits]), align: :right}
-    arr << {content: money(@cash.balances[:checking][@m][:diff] + @cash.balances[:savings][@m][:diff]), align: :right}
-    arr << {content: money(@cash.balances[:checking][@m][:ebalance] + @cash.balances[:savings][@m][:ebalance]), align: :right}
+    arr << {content: money(@cash.balances[:checking][:bbalance] + @cash.balances[:savings][:bbalance]), align: :right}
+    arr << {content: money(@cash.balances[:checking][:debits] + @cash.balances[:savings][:debits]), align: :right}
+    arr << {content: money(@cash.balances[:checking][:credits] + @cash.balances[:savings][:credits]), align: :right}
+    arr << {content: money(@cash.balances[:checking][:diff] + @cash.balances[:savings][:diff]), align: :right}
+    arr << {content: money(@cash.balances[:checking][:ebalance] + @cash.balances[:savings][:ebalance]), align: :right}
     arr
 
   end

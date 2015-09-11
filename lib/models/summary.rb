@@ -4,7 +4,7 @@ class Pdf::Summary < Prawn::Document
   def initialize(cash)
     super( top_margin: 35, page_layout: :landscape)
     @cash = cash
-    @cash.get_balances
+    @cash.get_all_balances
     @config = @cash.config
     make_pdf
     number_pages "#{Date.today}   -   Page <page> of <total>", { :start_count_at => 0, :page_filter => :all, :at => [bounds.right - 100, 0], :align => :right, :size => 6 }

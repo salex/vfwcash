@@ -9,31 +9,12 @@ class Pdf::Between < Prawn::Document
 
     @m = Vfwcash.yyyymm(@date)
     @cash = cash
-    @cash.get_balances
-    @results = cash.between_balance(@from,@to)
+    @cash.get_fund_balances(@from,@to)
+    @results = cash.balances
     @config = @cash.config
-    reset_balance
+    # reset_balance
     make_pdf
     number_pages "#{Date.today}   -   Page <page> of <total>", { :start_count_at => 0, :page_filter => :all, :at => [bounds.right - 100, 0], :align => :right, :size => 6 }
-  end
-
-  def reset_balance
-    accts = @cash.checking_funds + @cash.savings_funds
-    @results[:checking] =  {bbalance:0,diff:0,debits:0,credits:0,ebalance:0}
-    @results[:savings] =  {bbalance:0,diff:0,debits:0,credits:0,ebalance:0}
-    accts.each do |f|
-      if @cash.checking_funds.include?(f)
-        sum_from_to(@results[f],@results[:checking])
-      else
-        sum_from_to(@results[f],@results[:savings])
-      end
-    end
-  end
-
-  def sum_from_to(ffund,tfund)
-    ffund.each do |k,v|
-      tfund[k] += v
-    end
   end
 
   def header

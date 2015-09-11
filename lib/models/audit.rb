@@ -6,7 +6,8 @@ class Audit < Prawn::Document
     @date = Vfwcash.set_date(date).beginning_of_month
     @layout = {top:bounds.height.to_i,right:bounds.width.to_i,left:0,bottom:0,cursor:cursor}
     @config = cash.config
-    cash.get_balances
+    # cash.get_balances
+    puts @config
     @balances = cash.audit_api(@date)
     make_pdf
   end
@@ -60,13 +61,7 @@ class Audit < Prawn::Document
         "11.  Receipts During Quarter",
         "12.  Expenditures During Quarter",
         "13.  Net Cash Balances at End of Quarter"]
-        rows << h
-      # 1.upto(8) do |i|
-      #   rows << [i.to_s+'.',"begin","debits","credits","end"]
-      # end
-      # 3.times{rows << [' ',nil,nil,nil,nil]}
-      # rows << ["9.","begin","debits","credits","end"]
-      # rows << [{content:"Total",align: :right},"begin","debits","credits","end"]
+      rows << h
       bb = @eb = cr = db = 0
       @config[:funds].each do |f,v|
         bal = @balances[v[:fund]]
@@ -90,15 +85,11 @@ class Audit < Prawn::Document
           row(-1).font_style = :bold
           column(1..4).align = :right
           row(-1).align = :right
-
-
-
         end
       e.draw
 
     end
     @cur -= 182
-
   end
 
   def operations
@@ -138,7 +129,7 @@ class Audit < Prawn::Document
       save = 0
       cash = 100000
       t1 = ab+save+cash
-      bond = @balances['Savings'][:ebalance]
+      bond = @balances[:savings][:ebalance]
       t2 = t1 + bond
       rows << [{content:'Actual Balance', align: :right, colspan: 2},{content:money(ab),align: :right}]
       rows << [{content:'Savings Account Balance', align: :right, colspan: 2},{content:money(0),align: :right}]
@@ -190,9 +181,7 @@ class Audit < Prawn::Document
       draw_text @config[:qm][:name], at:[120,50]
 
       draw_text @config[:qm][:address], at:[120,35]
-      draw_text @config[:qm][:city], at:[120,25]
-
-      
+      draw_text @config[:qm][:city], at:[120,25]    
     end
 
   end
@@ -235,7 +224,6 @@ class Audit < Prawn::Document
   def money(int)
     Vfwcash.money(int)
   end
-
 
 end
 end

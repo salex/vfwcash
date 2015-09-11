@@ -2,27 +2,24 @@ require "yaml/store"
 
 module Vfwcash
 
-  class Cash
-    # Cash is the primary interface to the GNUCash database
+  class Gcash
+    # gcash is the primary interface to the GNUCash database
     # The initializer sets attributes based on data in the db and from the config file
     # that is common to all reports.
-    # Balance are computed and stored in a YAML::Store file and only updted if a new transaction
-    # is added to db.
 
     # API calls provide informtion needed for specific reports.
 
     attr_accessor  :balances, :checking, :savings, :checking_funds,:savings_funds,
-    :dates, :bmonth, :checking_acct, :savings_acct, :tmonths, :config, :store
+    :dates, :bmonth, :checking_acct, :savings_acct, :tmonths, :config
 
-     def initialize(store)
-      @store = store
-      @config = store[:config]
+     def initialize(config)
+      @config = config
       @checking_acct = @config[:checking_acct]
       @savings_acct = @config[:savings_acct]
       @checking_funds = CashAccount.find_by(name:@checking_acct).children.pluck(:name)
       @savings_funds = CashAccount.find_by(name:@savings_acct).children.pluck(:name)
       @dates = Vfwcash.transaction_range
-      set_tmonths    
+      set_tmonths 
     end
   # COMMON Methods
     def set_tmonths
@@ -37,30 +34,21 @@ module Vfwcash
     end
 
     def get_fund_balances(bdate,edate)
-      xbal = {}
-      xbal[:checking] =  {bbalance:0,diff:0,debits:0,credits:0,ebalance:0}
-      xbal[:savings] =  {bbalance:0,diff:0,debits:0,credits:0,ebalance:0}
+      @balances = {}
+      @balances[:checking] =  {bbalance:0,diff:0,debits:0,credits:0,ebalance:0}
+      @balances[:savings] =  {bbalance:0,diff:0,debits:0,credits:0,ebalance:0}
       accts = @checking_funds + @savings_funds
       accts.each do |f|
-        acct = CheckingAccount.find_by(name:f)
-        xbal[f] = balances_between(acct,bdate,edate)
+        acct = CashAccount.find_by(name:f)
+        @balances[f] = acct.balances_between(bdate,edate)
         if @checking_funds.include?(f)
-          sum_from_to(xbal[f],xbal[:checking])
+          sum_from_to(@balances[f],@balances[:checking])
         else
-          sum_from_to(xbal[f],xbal[:savings])
+          sum_from_to(@balances[f],@balances[:savings])
         end
       end
-     end
-
-    def balances_between(acct,first,last)
-      fdate = first.strftime('%Y%m%d')+'00'
-      ldate = last.strftime('%Y%m%d')+'24'
-      bb = acct.balance_on(first)
-      sp = acct.splits.joins(:tran).where('transactions.post_date between ? and ?',fdate,ldate)
-      credits = sp.where('value_num < ?',0).sum(:value_num)
-      debits = sp.where('value_num >= ?', 0).sum(:value_num)
-      diff = debits + credits
-      results = {bbalance:bb,diff:diff,debits:debits,credits:credits * -1,ebalance:bb+diff}
+      @checking = @balances[:checking]
+      @savings = @balances[:savings]
     end
 
     def sum_from_to(ffund,tfund)
@@ -69,49 +57,25 @@ module Vfwcash
       end
     end
 
-
-    def get_balances
-      @store.transaction do
-        last_entry = Tran.order(:enter_date).last.enter_date
-        if @store[:balances].present? && last_entry <= @config[:last_entry]
-          @balances = @store[:balances]
-          # puts "STORE"
-        else
-          get_acct_balances
-          @balances[:checking] = set_parent_balance(@checking_funds)
-          @balances[:savings] = set_parent_balance(@savings_funds)
-          @store[:balances] = balances
-          @config[:last_entry] = last_entry
-          # Update last_entry and save the config.yml file
-          File.open(File.join(Dir.pwd,'config/config.yml'), 'w+') {|f| f.write(@config.to_yaml)}
-          # puts "LOAD"
-        end
-        @checking = @balances[:checking]
-        @savings = @balances[:savings]
-      end
-    end
-
-    def get_acct_balances
-      @balances = {}
+    def get_all_balances
+      balances = {checking:{},savings:{}}
       accts = @checking_funds + @savings_funds
       accts.each do |f|
         acct = CashAccount.find_by(name:f)
-        @balances[f] = acct.balances(@dates.first,@dates.last)
-      end
-    end
-
-    def set_parent_balance(funds)
-      results = {}
-      @tmonths.each do |m|
-        results[m] = {bbalance:0,diff:0,debits:0,credits:0,ebalance:0}
-        funds.each do |f|
-          @balances[f][m].each do |k,v|
-            results[m][k] += v
-          end
+        balances[f] = {}
+        tmonths.each do |m|
+          bom = Date.parse(m+"01")
+          eom = bom.end_of_month
+          balances[f][m] = get_fund_balances(bom,eom)
+          balances[:checking][m] = @checking
+          balances[:savings][m] = @savings
         end
       end
-      results
-    end   
+      @balances = balances
+      @checking = @balances[:checking]
+      @saving = @balances[:savings]
+    end
+
   # REPORT Specific Methods
     def between_balance(from,to)
       between = {}
@@ -131,34 +95,8 @@ module Vfwcash
         boq = (boq - 1.month).beginning_of_quarter
         eoq = boq.end_of_quarter
       end
-      get_balances
-      yyyymm = []
-
-      0.upto(2) do |i|
-        yyyymm[i] = Vfwcash.yyyymm(boq+i.months)
-      end
-      rbalances = {}
-      @checking_funds.each do |f|
-        rbalances[f] = {bbalance:@balances[f][yyyymm.first][:bbalance],ebalance:@balances[f][yyyymm.last][:ebalance]}
-        db = 0
-        cr = 0
-        yyyymm.each do |m|
-          db += @balances[f][m][:debits]
-          cr += @balances[f][m][:credits]
-        end
-        rbalances[f][:debits] = db
-        rbalances[f][:credits] = cr
-      end
-      rbalances["Savings"] = {bbalance:@savings[yyyymm.first][:bbalance],ebalance:@savings[yyyymm.last][:ebalance]}
-      db = 0
-      cr = 0
-      yyyymm.each do |m|
-        db += @savings[m][:debits]
-        cr += @savings[m][:credits]
-      end
-      rbalances["Savings"][:debits] = db
-      rbalances["Savings"][:credits] = cr
-      rbalances["Checking"] = {bbalance:@checking[yyyymm.first][:bbalance],ebalance:@checking[yyyymm.last][:ebalance],debits:0,credits:0}
+      get_fund_balances(boq,eoq)
+      rbalances = @balances
       rbalances["Cash"] = {bbalance:100000,ebalance:100000,debits:0,credits:0}
       rbalances[:dates] = {boq:boq,eoq:eoq, report_date:date}
       rbalances
@@ -166,7 +104,7 @@ module Vfwcash
 
     def split_ledger_api(date)
       response = {rows:split_ledger(date)}
-      response[:balances] = {checking:@checking[@bmonth]}
+      response[:balances] = {checking:@checking}
       response[:month] = @bmonth
       return response
     end
@@ -175,7 +113,7 @@ module Vfwcash
       @bmonth = Vfwcash.yyyymm(date)
       trans = Tran.month_transactions(date)
       lines = []
-      b = @checking[@bmonth][:bbalance]
+      b = @checking[:bbalance]
       trans.each do |t|
         date = Date.parse(t.post_date)
         line = {date: date.strftime("%m/%d/%Y"),num:t.num,desc:t.description,
@@ -207,9 +145,9 @@ module Vfwcash
       response = {rows:month_ledger(date)}
       fund_bal = {}
       @checking_funds.each do |f|
-        fund_bal[f] = @balances[f][@bmonth]
+        fund_bal[f] = @balances[f]
       end
-      response[:balances] = {savings:@savings[@bmonth],checking:@checking[@bmonth],funds:fund_bal}
+      response[:balances] = {savings:@savings,checking:@checking,funds:fund_bal}
       response[:funds] = {savings:@savings_funds,checking:@checking_funds}
       response[:month] = @bmonth
       return response

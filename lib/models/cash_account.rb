@@ -28,31 +28,6 @@ class CashAccount < ActiveRecord::Base
     b = sp.sum(:value_num)
   end
 
-
-  def balances(first=nil,last=nil)
-    if first.nil?
-      trange = Vfwcash.transaction_range
-      first = trange.first
-      last = trange.last
-    end
-    curr = first
-    b = 0
-    results = {}
-    while curr <= last
-      month = Vfwcash.yyyymm(curr)
-      bom = month + "00"
-      eom = month + "32"
-      sp = splits_by_month(bom,eom)
-      credits = sp.where('value_num < ?',0).sum(:value_num)
-      debits = sp.where('value_num >= ?', 0).sum(:value_num)
-      diff = debits + credits
-      results[month] = {bbalance:b,diff:diff,debits:debits,credits:credits * -1,ebalance:b+diff}
-      b += diff
-      curr += 1.month
-    end
-    return results
-  end
-
   def balances_between(first,last)
     fdate = first.strftime('%Y%m%d')+'00'
     ldate = last.strftime('%Y%m%d')+'24'

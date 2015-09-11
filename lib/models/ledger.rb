@@ -5,7 +5,7 @@ class Pdf::Ledger < Prawn::Document
     super( top_margin: 35, page_layout: :landscape)
     @date = Vfwcash.set_date(date).beginning_of_month
     @config = cash.config
-    cash.get_balances
+    cash.get_fund_balances(@date,@date.end_of_month)
     @response = cash.month_ledger_api(@date)
 
     make_pdf

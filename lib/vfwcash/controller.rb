@@ -3,19 +3,12 @@ require 'sqlite3'
 require "prawn/table"
 require "prawn"
 require 'yaml'
-require "yaml/store"
-
-
 
 module Vfwcash
   class Controller
     attr_accessor  :config, :cash
     def initialize(date)
-      store = YAML::Store.new("#{PWD}/config/data.yml")
-      store.transaction do
-        store[:config] = YAML.load_file(File.join(PWD,'config/config.yml'))
-        @config = store[:config]
-      end
+      @config = YAML.load_file(File.join(PWD,'config/config.yml'))
       @date = date
       ActiveRecord::Base.logger = Logger.new(STDERR)
       ActiveRecord::Base.logger.level = 3
@@ -26,10 +19,7 @@ module Vfwcash
         :adapter => 'sqlite3',
         :database => @config[:database]
       )
-      store.transaction do
-        @cash = Cash.new(store)
-      end
-      # @cash.get_balances
+      @cash = Gcash.new(@config)
       unless @cash.dates.include?(@date)
         puts "No transactions exist for #{@date.beginning_of_month}"
         exit(0)
@@ -71,7 +61,6 @@ module Vfwcash
       pdf.render_file(filename)
       open_pdf(filename)
     end
-
 
     def audit
       pdf = Pdf::Audit.new(@date,@cash)
