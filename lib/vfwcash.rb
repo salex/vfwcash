@@ -7,6 +7,7 @@ module Vfwcash
   # Your code goes here...
   LibPath = File.expand_path(File.dirname(__FILE__))
   PWD = Dir.pwd
+  Config =  YAML.load_file(File.join(PWD,'config/config.yml'))
 
   def self.yyyymm(date=nil)
     date = Vfwcash.set_date(date)

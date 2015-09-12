@@ -1,4 +1,4 @@
-class Tran < ActiveRecord::Base
+class Tran < SqliteBase
 	self.table_name = "transactions"
 	self.primary_key = 'guid'
 

@@ -1,5 +1,5 @@
 
-class CashAccount < ActiveRecord::Base
+class CashAccount < SqliteBase
   self.table_name = "accounts"
 
   self.primary_key = 'guid'

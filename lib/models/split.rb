@@ -1,4 +1,4 @@
-class Split < ActiveRecord::Base
+class Split < SqliteBase
   self.primary_key = 'guid'
   belongs_to :tran, foreign_key: 'tx_guid'
   belongs_to :cash_account, foreign_key: 'account_guid'
