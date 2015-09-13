@@ -36,13 +36,6 @@ module Vfwcash
       pdf = Pdf::SplitLedger.new(@date,@cash)
     end
 
-    def split_response
-      date = Vfwcash.set_date(@date).beginning_of_month
-      @cash.get_fund_balances(@date,@date.end_of_month)
-      @cash.response = @cash.split_ledger_api(@date)
-      @cash
-    end
-
     def audit
       pdf = Pdf::Audit.new(@date,@cash)
     end

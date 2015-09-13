@@ -33,7 +33,7 @@ class Audit < Prawn::Document
 
   def header
     bounding_box([0,@cur], width: 80, height:80) do
-      image "#{Dir.pwd}/config/vfw-gray.png",height:50
+      image "#{Vfwcash::LibPath}/templates/vfw-gray.png",height:50
     end
 
     bounding_box([0, @cur], :width => @layout[:right], :height => 30) do
