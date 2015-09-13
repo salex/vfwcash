@@ -61,7 +61,6 @@ module Vfwcash
         wd = Dir.pwd
       end
     end
-
     unless Dir.exist?(wd+'/config')
       Dir.mkdir(wd+'/config')
       puts "Created config directory in #{wd}"
@@ -77,12 +76,7 @@ module Vfwcash
       puts "Created config.yml file in config directory, must be edited for your post."
       ok = false
     end
-    unless File.exist?(wd+"/config/"+"vfw-gray.png")
-      FileUtils.cp((LibPath+"/templates/vfw-gray.png"),(wd+"/config/"+"vfw-gray.png"))
-      puts "Created vfw-gray.png image in config directory."
-      ok = false
-    end
-    if options['db']
+     if options['db']
       unless File.exist?(wd+"/config/"+"vfwcash.gnucash")
         FileUtils.cp((LibPath+"/templates/vfwcash.gnucash"),(wd+"/config/"+"vfwcash.gnucash"))
         puts "Created vfwcash.gnucash db in config directory."

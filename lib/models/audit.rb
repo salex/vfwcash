@@ -7,7 +7,6 @@ class Audit < Prawn::Document
     @layout = {top:bounds.height.to_i,right:bounds.width.to_i,left:0,bottom:0,cursor:cursor}
     @config = cash.config
     # cash.get_balances
-    puts @config
     @balances = cash.audit_api(@date)
     make_pdf
   end
