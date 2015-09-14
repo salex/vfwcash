@@ -1,0 +1,53 @@
+.box
+  strong = "#{@cash.config[:post][:post]} Month Summary"
+  |&nbsp;|&nbsp;
+  = link_to "Home", root_path, style:"color:white;"
+  |&nbsp;|&nbsp;
+  = link_to "Checkbook Menu", "/checkbooks", style:"color:white;"
+
+table.small-table
+  tr
+    th Fund
+    th BBegin
+    th Debits
+    th Credits
+    th P/L
+    th EBalance
+  tr
+    th  Checking
+    td.tright = int_money @cash.balances[:checking][:bbalance]
+    td.tright = int_money @cash.balances[:checking][:debits]
+    td.tright = int_money @cash.balances[:checking][:credits]
+    td.tright = int_money @cash.balances[:checking][:diff]
+    td.tright = int_money @cash.balances[:checking][:ebalance]
+
+  - @cash.checking_funds.each do |f|
+    tr
+      th = f
+      td.tright = int_money @cash.balances[f][:bbalance]
+      td.tright = int_money @cash.balances[f][:debits]
+      td.tright = int_money @cash.balances[f][:credits]
+      td.tright = int_money @cash.balances[f][:diff]
+      td.tright = int_money @cash.balances[f][:ebalance]
+
+  tr
+    th  Savings
+    td.tright = int_money @cash.balances[:savings][:bbalance]
+    td.tright = int_money @cash.balances[:savings][:debits]
+    td.tright = int_money @cash.balances[:savings][:credits]
+    td.tright = int_money @cash.balances[:savings][:diff]
+    td.tright = int_money @cash.balances[:savings][:ebalance]
+
+  tr
+    th Curr Assets
+    td.tright = int_money (@cash.balances[:savings][:bbalance] + @cash.balances[:checking][:bbalance])
+    td.tright = int_money (@cash.balances[:savings][:debits]   + @cash.balances[:checking][:debits])
+    td.tright = int_money (@cash.balances[:savings][:credits]  + @cash.balances[:checking][:credits])
+    td.tright = int_money (@cash.balances[:savings][:diff]     + @cash.balances[:checking][:diff])
+    td.tright = int_money (@cash.balances[:savings][:ebalance] + @cash.balances[:checking][:ebalance])
+
+
+ 
+
+
+

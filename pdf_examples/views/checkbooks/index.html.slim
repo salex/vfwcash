@@ -1,0 +1,57 @@
+fieldset.row
+  legend
+    |#{@cash.config[:post][:post]} Checkbook Ledgers/Registers/Reports
+  .link-bar 
+    = link_to "Home", root_path
+    = link_to "Reports Menu", "/reports"
+    = link_to "Last Trustees' Report of Audit", audit_pdf_checkbooks_path, target:'_blank'
+    strong Ledger Summary:&nbsp;
+    = link_to "HTML", summary_checkbooks_path
+    = link_to "PDF", summary_pdf_checkbooks_path, target:'_blank'
+    table
+      tr
+        th Balance Between(dates) Summary
+        th From: 
+        td = text_field_tag :date_from, nil,class:'datepicker-yymm'
+        th To:
+        td = text_field_tag :date_to, nil,class:'datepicker-yymm'
+        th
+          .strong.button.tiny.radius data-behavior="get-bal" HTML
+          .strong.button.tiny.radius data-behavior="get-bal-pdf" PDF
+
+
+
+  .row
+    .medium-4.columns
+      .box General Ledger
+      ul
+        - @cash.tmonths.reverse.each do |curr|
+          li 
+            = curr
+            |:&nbsp;
+            = link_to 'HTML', ledger_checkbook_path(curr)
+            |&nbsp;|&nbsp;
+            = link_to 'PDF', ledger_pdf_checkbook_path(curr), target:'_blank'
+            |&nbsp;|&nbsp;
+            = link_to 'Bal', balance_checkbook_path(curr)
+
+    .medium-4.columns
+      .box Split Ledger
+      ul
+        - @cash.tmonths.reverse.each do |curr|
+          li 
+            = curr
+            |:&nbsp;
+            = link_to 'HTML', split_checkbook_path(curr)
+            |&nbsp;|&nbsp;
+            = link_to 'PDF', split_pdf_checkbook_path(curr), target:'_blank'
+    .medium-4.columns
+      .box Registers
+      ul
+        - @cash.tmonths.reverse.each do |curr|
+          li 
+            = curr
+            |:&nbsp;
+            = link_to 'HTML', register_checkbook_path(curr)
+            |&nbsp;|&nbsp;
+            = link_to 'PDF', register_pdf_checkbook_path(curr), target:'_blank'

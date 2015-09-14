@@ -1,12 +1,17 @@
 ---
+# path to you exported or saved sqlite3 GnuCash database
 :database: "/Users/salex/Work/vfwcash/config/vfwcash.gnucash"
-:last_entry: '20150827145728'
+# GnuCash parent account names for Checking and Savings accounts
 :checking_acct: Checking Account
 :savings_acct: Savings Account
+# Balance from bank statement and GnuCash on last Bank Balance reconciliation
+# GnuCash stores all amounts (money) as integers or Pennies in US Dollars
+# to be consistent, follow that convention in the config file
 :checking:
   :balance: 1783700
   :outstanding: 20000
-  :actual_balance: 
+  :date: 
+# The rest of the configuration data is used to format the Trustee' Report of Audit
 :qm:
   :name: Steven V Quartermaster
   :address: 405 Somestreet Hls
@@ -18,6 +23,7 @@
   :address: 817 somestreet Dr
   :city: Sometown AL, 35901
   :department: Alabama
+# Questions and Answers from the operations section
 :operations:
   :a:
     :ques: a. Have required payroll deductions been made?
@@ -50,11 +56,13 @@
   :j:
     :ques: j. Amount of Property Insurance?
     :answ: 31350000
+# Date Audit report signed or submitted
 :date: '2015-07-14'
 :bond:
   :name: Tallman Insurance Agency
   :amount: 8000000
   :to: '2016-09-30'
+# a cross reference to your fund names in GnuCash
 :funds:
   1:
     :fund: Dues
@@ -81,5 +89,7 @@
     :fund: Temporary
     :text: 8. Temporary Fund
   9:
-    :fund: Savings
+    # Savings is not a real fund, but is computed as sum of all funds that are not
+    # a child of 'Checking Account'. The symbol ':savings' is used to access that sum
+    :fund: :savings
     :text: 9. Bonds and Investments Not Credited to Funds

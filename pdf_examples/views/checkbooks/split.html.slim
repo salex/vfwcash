@@ -1,0 +1,45 @@
+.box
+  strong = "#{@cash.config[:post][:post]} Split Ledger"
+  |&nbsp;|&nbsp;
+  = link_to "Home", root_path, style:"color:white;"
+  |&nbsp;|&nbsp;
+  = link_to "Checkbook Menu", "/checkbooks", style:"color:white;"
+
+table.small-table
+  tr
+    th Date
+    th Num
+    th style="width:15rem;" Desc
+    th Account
+    th R
+    th.w3r Debits
+    th.w3r Credits
+    th.w3r Balance
+  tr
+    td
+    td
+    td Beginning Balance
+    td
+    td
+    td
+    td
+    td.tright = int_money(@response[:balances][:checking][:bbalance])
+  - @response[:rows].each do |row|
+    tr.whiteSelectedBackground
+      td = row[:date]
+      td = row[:num]
+      td = row[:desc]
+      td
+      td
+      td.tright = row[:checking][:db].zero? ? nil : int_money(row[:checking][:db])
+      td.tright = row[:checking][:cr].zero? ? nil : int_money(row[:checking][:cr])
+      td.tright = row[:balance].zero? ? nil : int_money(row[:balance])
+    - row[:details].each do |d|
+      tr.snowSelectedBackground
+        td colspan="2"
+        td = d[:memo]
+        td = d[:name]
+        td = d[:r]
+        td.tright = d[:db].zero? ? nil : int_money(d[:db])
+        td.tright = d[:cr].zero? ? nil : int_money(d[:cr])
+        td

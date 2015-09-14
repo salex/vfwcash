@@ -1,0 +1,58 @@
+.box
+  strong = "#{@cash.config[:post][:post]} General Ledger"
+  |&nbsp;|&nbsp;
+  = link_to "Home", root_path, style:"color:white;"
+  |&nbsp;|&nbsp;
+  = link_to "Checkbook Menu", "/checkbooks", style:"color:white;"
+  |&nbsp;
+  = @ip
+table.small-table.f7r
+  tr
+    th Date
+    th Num
+    th R
+    th style="width:15rem;" Desc
+    th.tcenter colspan="2" + Checking -
+    - @response[:funds][:checking].each do |f|
+      th.tcenter colspan="2" = "+ #{f} -"
+    th.tcenter colspan="2" + Savings -
+
+
+  tr
+    th colspan="4" = "Beginning balance for #{@response[:month]}: Total Current Assets #{int_money(@response[:balances][:savings][:bbalance] + @response[:balances][:checking][:bbalance])}"
+    th.tcenter colspan="2" = int_money(@response[:balances][:checking][:bbalance])
+
+    - @response[:funds][:checking].each do |f|
+      th.tcenter colspan="2" = int_money(@response[:balances][:funds][f][:bbalance])
+    th.tcenter colspan="2" = int_money(@response[:balances][:savings][:bbalance])
+
+
+  - @response[:rows].each do |r|
+    tr
+      - r.each do |k,v|
+        - if v.class == Hash
+          td.tright
+            = int_money(v[:db]) unless v[:db].zero?
+          td.tright
+            = int_money(v[:cr]) unless v[:cr].zero?
+        - else
+          td = v
+
+  tr
+    th colspan="4" = "Total Debits/Credits for #{@response[:month]}"
+    td.tright = int_money(@response[:balances][:checking][:debits])
+    td.tright = int_money(@response[:balances][:checking][:credits])
+    - @response[:funds][:checking].each do |f|
+      td.tright = int_money(@response[:balances][:funds][f][:debits])
+      td.tright = int_money(@response[:balances][:funds][f][:credits])
+    td.tright = int_money(@response[:balances][:savings][:debits])
+    td.tright = int_money(@response[:balances][:savings][:credits])
+
+  tr
+    th colspan="4" = "Ending balance for #{@response[:month]} - Total Current Assets: #{int_money(@response[:balances][:savings][:ebalance] + @response[:balances][:checking][:ebalance])}"
+    th.tcenter colspan="2" = int_money(@response[:balances][:checking][:ebalance])
+
+    - @response[:funds][:checking].each do |f|
+      th.tcenter colspan="2" = int_money(@response[:balances][:funds][f][:ebalance])
+    th.tcenter colspan="2" = int_money(@response[:balances][:savings][:ebalance])
+

@@ -1,6 +1,6 @@
-# VFWcash
+# VFWCash
 
-A beta version of a Ruby Command Line gem that generates VFW formated reports(pdf) from a GnuCash book.
+A beta version of a Ruby gem that provides a Command Line Interface (CLI) to generates VFW formated reports(pdf) from a GnuCash book. It also provides an pseudo API to access the same reports and/or data if accessing the reports from another application.
 
 ## Why
 
@@ -14,11 +14,11 @@ interface to the GnuCash data.
 GnuCash was set up to use the VFW's version of Fund Based Accounting. This became fairly simple and
 could be used by any Post or any organization that uses fund based accounting (most non-profit organizations)
 I'll point out that we do not use
-GnuCash as our main accounting system, although we could.  We have an Accountant that handles mainly payroll and taxes and we send them the information they need (in reports or source documents). Then they send us information we need. We basically use it as a checkbook, fund manager and enter stuff from the accountant (payroll checks, eft or forms to pay taxes etc). I also summarize income and expense from our customized post management system (sales, donations, etc).
+GnuCash as our main accounting system, although we could.  We have an Accountant that handles mainly payroll and taxes and we send them the information they need (in reports or source documents). We basically use it as a checkbook, fund manager and enter stuff from the accountant (payroll checks, eft or forms to pay taxes etc). I also summarize income and expense from our customized post management system (sales, donations, etc).
 
-I wanted to share my work, but I work on a Mac and setting up Rails on Windows would probably be more than most VFW
+I wanted to share my work, but I work on a Mac and setting up Ruby on Rails on Windows would probably be more than most VFW
 users could handle.  Setting up Ruby on Windows is fairly straight forward (http://rubyinstaller.org) and so I decided to
-write a command line interface to the models and Prawn PDF reports I had developed. Hopefully I can document how to use the CLI on Windows, if I can remember how to use Windows!
+write a command line interface to the models and Prawn PDF reports I had developed. Hopefully I can document how to use the CLI on Windows, if I can remember how to use Windows! I also replaced my GnuCash interface in our custom application to use VFWCash
 
 ## Installation
 
@@ -55,7 +55,7 @@ now the vfwcash install command with a --db option will install a small sqlite3 
 only contains a few transactions for the months April through August of 2015.  You don't need GnuCash 
 installed to use the CLI, unless you want to add transactions.
 
-You must edit the config/config.yml file after it is installed and set the absolute path to the sqlite3 database.
+You must edit the config/config.yml file after it is installed and set the absolute path to the sqlite3 database and other attributes that define you Post and your GnuCash setup.
 
 GunCash's default data format is XML, but there is an option to use a sqlite3 database in the default download (Postgresql or Mysql if you want to roll your own). I still use the
 XML version because of a built-in backup scheme. Since I'm only concerned with reports a few times a month, I use `Save As` to create a sqlite3 copy of the database for reporting.
@@ -92,7 +92,11 @@ of these reports in the folder [`pdf_examples`](https://github.com/salex/vfwcash
 * balance
   * Like the summary command, but only produces a summary of fund balances, debits and credits for a single month in a compact format.
 * between
-  * Same format as balance, but produces a summary between two dates. 
+  * Same format as balance, but produces a summary between any two dates. 
+
+### API
+
+I will put something in the wiki to describe how to use VFWCash from another application at some point. There is another controller to access the same reports or data from another application. There is a sample RoR controller and views in the examples directory that uses this option.
 
 ## Contributing
 

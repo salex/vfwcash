@@ -1,0 +1,56 @@
+.box
+  strong = "#{@cash.config[:post][:post]} General Ledger Summary"
+  |&nbsp;|&nbsp;
+  = link_to "Home", root_path, style:"color:white;"
+  |&nbsp;|&nbsp;
+  = link_to "Checkbook Menu", "/checkbooks", style:"color:white;"
+table.small-table.f7r
+  tr
+    th = "General Ledger Summary for #{@cash.dates}"
+    th.tcenter colspan="2" + Checking -
+    - @cash.checking_funds.each do |f|
+      th.tcenter colspan="2" = "+ #{f} -"
+    th.tcenter colspan="2" + Savings -
+  - @cash.tmonths.each do |m|
+
+    - tca = @cash.balances[:savings][m][:bbalance] + @cash.balances[:checking][m][:bbalance]
+    - cntnt = " #{m} Beginning Balance (Current Assets #{int_money(tca)} )"
+
+    tr
+      th = cntnt
+      th.tcenter colspan="2" = int_money(@cash.balances[:checking][m][:bbalance])
+
+      - @cash.checking_funds.each do |f|
+        th.tcenter colspan="2" = int_money(@cash.balances[f][m][:bbalance])
+      th.tcenter colspan="2" = int_money(@cash.balances[:savings][m][:bbalance])
+
+    tr
+      - pl = @cash.balances[:savings][m][:diff] + @cash.balances[:checking][m][:diff]
+      - cntnt = "Total Debits/Credits (Profit/Loss: #{int_money(pl)})"
+
+      th = cntnt
+      td.tright = int_money(@cash.balances[:checking][m][:debits])
+      td.tright = int_money(@cash.balances[:checking][m][:credits])
+
+      - @cash.checking_funds.each do |f|
+        td.tright = int_money(@cash.balances[f][m][:debits])
+        td.tright = int_money(@cash.balances[f][m][:credits])
+
+      td.tright = int_money(@cash.balances[:savings][m][:debits])
+      td.tright = int_money(@cash.balances[:savings][m][:credits])
+
+  tr
+    - m = @cash.tmonths.last
+    - tca = @cash.balances[:savings][m][:bbalance] + @cash.balances[:checking][m][:bbalance]
+    - cntnt = " #{m} Current Balance (Current Assets #{int_money(tca)} )"
+
+    th = cntnt
+    th.tcenter colspan="2" = int_money(@cash.balances[:checking][m][:ebalance])
+
+    - @cash.checking_funds.each do |f|
+      th.tcenter colspan="2" = int_money(@cash.balances[f][m][:ebalance])
+    th.tcenter colspan="2" = int_money(@cash.balances[:savings][m][:ebalance])
+
+
+
+
