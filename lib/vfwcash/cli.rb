@@ -27,6 +27,11 @@ module Vfwcash
     end
 
   desc "between date1 date2", "Get balances between two dates"
+  long_desc <<-HELLO_WORLD
+
+  Produces a Fund Balance summary between two dates (beginning balance, debits, credits, ending balance) in a compact format.
+
+  HELLO_WORLD
 
   def between(first, last)
     sdate = get_date(first)
@@ -160,7 +165,7 @@ module Vfwcash
     desc "balance [DATE]", "Monthly Fund Balance Summary "
     long_desc <<-HELLO_WORLD
 
-    Product Monthly Fund Balance summay for only one month in a compact format.
+    Produces a Monthly Fund Balance summary (beginning balance, debits, credits, ending balance) for only one month in a compact format.
 
     HELLO_WORLD
     def balance( date=nil )
