@@ -55,7 +55,7 @@ now the vfwcash install command with a --db option will install a small sqlite3 
 only contains a few transactions for the months April through August of 2015.  You don't need GnuCash 
 installed to use the CLI, unless you want to add transactions.
 
-You must edit the config/config.yml file after it is installed and set the absolute path to the sqlite3 database and other attributes that define you Post and your GnuCash setup.
+You must edit the config/vfwcash.yml file after it is installed and set the absolute path to the sqlite3 database and other attributes that define you Post and your GnuCash setup.
 
 GunCash's default data format is XML, but there is an option to use a sqlite3 database in the default download (Postgresql or Mysql if you want to roll your own). I still use the
 XML version because of a built-in backup scheme. Since I'm only concerned with reports a few times a month, I use `Save As` to create a sqlite3 copy of the database for reporting.

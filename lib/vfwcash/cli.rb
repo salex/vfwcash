@@ -50,7 +50,7 @@ module Vfwcash
 
     Install will create two directories [config,pdf]in your current working directory.
     The PDF directory will contain copies of the generated PDF reports.
-    The config directory will contain a config.yml file that contains post information, 
+    The config directory will contain a vfwcash.yml file that contains post information, 
     path to sqlit3 database
     and other configuration data needed to generate a Trustees' Report of Audit.
 

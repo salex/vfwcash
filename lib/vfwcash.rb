@@ -4,14 +4,14 @@ require 'vfwcash/controller'
 require 'vfwcash/api'
 
 module Vfwcash
-  # Your code goes here...
+  # Define constants to define where your are and location of config file
   LibPath = File.expand_path(File.dirname(__FILE__))
   PWD = Dir.pwd
-  Config =  YAML.load_file(File.join(PWD,'config/config.yml'))
+  Config =  YAML.load_file(File.join(PWD,'config/vfwcash.yml'))
 
   def self.yyyymm(date=nil)
     date = Vfwcash.set_date(date)
-    yyyymm = "#{date.year}#{date.month.to_s.rjust(2,'0')}"
+    yyyymm = date.strftime('%Y%m') # "#{date.year}#{date.month.to_s.rjust(2,'0')}"
   end
 
   def self.transaction_range
@@ -43,7 +43,7 @@ module Vfwcash
   end
 
   def self.valid_root?
-    unless Dir.exist?(PWD+'/config') && Dir.exist?(PWD+'/pdf') && File.exist?(PWD+"/config/"+"config.yml")
+    unless Dir.exist?(PWD+'/config') && Dir.exist?(PWD+'/pdf') && File.exist?(PWD+"/config/"+"vfwcash.yml")
       puts "Error: vfwcash must be run from a diectory containing valid  configuration files"
       exit(0)
     end
@@ -71,9 +71,9 @@ module Vfwcash
       puts "Created pdf directory in #{wd}"
       ok = false
     end
-    unless File.exist?(wd+"/config/"+"config.yml")
-      FileUtils.cp((LibPath+"/templates/config.yml"),(wd+"/config/"+"config.yml"))
-      puts "Created config.yml file in config directory, must be edited for your post."
+    unless File.exist?(wd+"/config/"+"vfwcash.yml")
+      FileUtils.cp((LibPath+"/templates/vfwcash.yml"),(wd+"/config/"+"vfwcash.yml"))
+      puts "Created vfwcash.yml file in config directory, must be edited for your post."
       ok = false
     end
      if options['db']
@@ -85,6 +85,6 @@ module Vfwcash
     end
 
     puts "No installation required" if ok
-    puts "Installation complete. Edit your config.yml file to set your post information." if !ok
+    puts "Installation complete. Edit your vfwcash.yml file to set your post information." if !ok
   end
 end
