@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Vfwcash::VERSION
   spec.authors       = ["Steve Alex"]
   spec.email         = ["salex@mac.com"]
-  spec.summary       = %q{Simple cammand line tool to generate PDF reports from GNUCash.}
-  spec.description   = %q{Simple cammand line tool to generate PDF reports from GNUCash..}
+  spec.summary       = %q{Simple command line tool/pseudo API to generate PDF reports from GNUCash.}
+  spec.description   = %q{Simple command line tool/pseudo API to generate PDF reports from GNUCash..}
   spec.homepage      = ""
   spec.license       = "MIT"
 

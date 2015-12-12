@@ -7,7 +7,16 @@ module Vfwcash
   # Define constants to define where your are and location of config file
   LibPath = File.expand_path(File.dirname(__FILE__))
   PWD = Dir.pwd
-  Config =  YAML.load_file(File.join(PWD,'config/vfwcash.yml'))
+
+  def self.config
+    if ENV['VFWCASHCONFIG'].present?
+      config = YAML.load_file(ENV['VFWCASHCONFIG'])
+    else
+      config = YAML.load_file("#{PWD}/config/vfwcash.yml")
+    end
+    ENV['VFWCASHDATABASE'] = config[:database]
+    return config
+  end
 
   def self.yyyymm(date=nil)
     date = Vfwcash.set_date(date)

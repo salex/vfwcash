@@ -4,8 +4,8 @@ module Vfwcash
     attr_accessor  :config, :cash
     def initialize(date=nil)
       @date = date
-      require_relative '../models/sqlite_base'
-      @config = Vfwcash::Config
+      @config = Vfwcash.config
+      require_relative './sqlite_base'
       Dir.glob(File.join(LibPath,'models/*')).each do |file|
         require file
       end
