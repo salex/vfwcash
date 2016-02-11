@@ -60,20 +60,25 @@ module Vfwcash
     def get_all_balances
       balances = {checking:{},savings:{}}
       accts = @checking_funds + @savings_funds
+      mbalance = {}
+      tmonths.each do |m|
+        bom = Date.parse(m+"01")
+        eom = bom.end_of_month
+        get_fund_balances(bom,eom)
+        mbalance[m] = @balances
+      end
       accts.each do |f|
         acct = CashAccount.find_by(name:f)
         balances[f] = {}
         tmonths.each do |m|
-          bom = Date.parse(m+"01")
-          eom = bom.end_of_month
-          balances[f][m] = get_fund_balances(bom,eom)
-          balances[:checking][m] = @checking
-          balances[:savings][m] = @savings
+          balances[f][m] = mbalance[m][f]
+          balances[:checking][m] = mbalance[m][:checking]
+          balances[:savings][m] = mbalance[m][:savings]
         end
       end
       @balances = balances
       @checking = @balances[:checking]
-      @saving = @balances[:savings]
+      @savings = @balances[:savings]
     end
 
   # REPORT Specific Methods

@@ -12,7 +12,6 @@ module Vfwcash
       @cash = Gcash.new(@config)
       unless @cash.dates.include?(@date)
         puts "No transactions exist for #{@date.beginning_of_month}"
-        exit(0)
       end
     end
 
