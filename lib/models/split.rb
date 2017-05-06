@@ -21,6 +21,6 @@ class Split < SqliteBase
       credit = 0
       debit = amt
     end
-    return {fund:fund,name:acct_name,cr:credit,db:debit, memo:self.memo, r:self.reconcile_state}
+    return {fund:fund,name:acct_name,cr:credit,db:debit, memo:self.memo, r:self.reconcile_state, aguid:self.account_guid}
   end
 end

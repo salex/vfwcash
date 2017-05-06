@@ -14,6 +14,38 @@ class CashAccount < SqliteBase
     CashAccount.where(parent_guid:self.guid)
   end
 
+  def account_ledger
+    acct_trans = self.trans.order(:post_date).distinct
+    b = 0
+    lines = []
+    acct_trans.each do |t|
+      date = Date.parse(t.post_date)
+      line = {date: date.strftime("%m/%d/%Y"),num:t.num,desc:t.description,
+        checking:{db:0,cr:0},details:[],balance:0, memo:nil,r:nil}
+      t.splits.each do |s|
+        details = s.details
+        if details[:aguid] == self.guid
+          line[:checking][:db] += details[:db]
+          line[:checking][:cr] += details[:cr]
+          b += (details[:db] - details[:cr])
+          line[:balance] = b
+          line[:r] = details[:r]
+        else
+          line[:balance] = b
+          if line[:memo].nil?
+            line[:memo] = details[:name]
+          else
+            line[:memo] = "- Split Transaction -"
+          end
+        end
+        line[:details] << details
+      end
+      lines << line
+    end
+    lines
+  end
+
+
   def balance(decimal=true)
     b = self.splits.sum(:value_num)
     if decimal
