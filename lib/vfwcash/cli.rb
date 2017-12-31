@@ -116,7 +116,7 @@ module Vfwcash
     HELLO_WORLD
     def register( date=nil )
       bom = get_date(date)
-      Controller.new(bom).register
+      Controller.new(bom).cb_register
     end
 
   ######### SPLIT

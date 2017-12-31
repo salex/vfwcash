@@ -51,8 +51,8 @@ module Vfwcash
     end
 
 
-    def register
-      pdf = Register.new(@date,@cash)
+    def cb_register
+      pdf = RegisterPdf.new(@date,@cash)
       filename = "#{PWD}/pdf/register_#{Vfwcash.yyyymm(@date)}.pdf"
       pdf.render_file(filename)
       open_pdf(filename)

@@ -31,8 +31,8 @@ module Vfwcash
       pdf = Summary.new(@cash)
     end
 
-    def register
-      pdf = Register.new(@date,@cash)
+    def register_pdf
+      pdf = RegisterPdf.new(@date,@cash)
     end
 
     def split

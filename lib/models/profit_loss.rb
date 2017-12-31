@@ -58,50 +58,50 @@ class ProfitLoss < Prawn::Document
       text_box extra, at: [COL[@level - 1],@cur], width:70,align: :right, style: :bold  
     end
     text_box imoney(amount), at: [COL[@level],@cur], width:70,align: :right, style: :bold  
-    @cur -= 9 
+    @cur -= 10 
   end
 
   def pad11_row(acct,amount)
     text_box acct, at: [10,@cur], width:130,align: :left   
     text_box imoney(amount), at: [140,@cur], width:70,align: :right   
-    @cur -= 9
+    @cur -= 10
   end
 
   def pad12_row(acct,amount)
     text_box acct, at: [10,@cur], width:130,align: :left   
     text_box imoney(amount), at: [210,@cur], width:70,align: :right   
-    @cur -= 9
+    @cur -= 10
   end
 
   def pad22_row(acct,amount)
     text_box acct, at: [20,@cur], width:120,align: :left   
     text_box imoney(amount), at: [140,@cur], width:70,align: :right   
-    @cur -= 9
+    @cur -= 10
   end
 
   # def pad32_row(acct,amount)
   #   text_box acct, at: [30,@cur], width:110,align: :left   
   #   text_box imoney(amount), at: [140,@cur], width:70,align: :right   
-  #   @cur -= 9
+  #   @cur -= 10
   # end
 
 
   def pad13_row(acct,amount)
     text_box acct, at: [10,@cur], width:130,align: :left   
     text_box imoney(amount), at: [280,@cur], width:70,align: :right   
-    @cur -= 9
+    @cur -= 10
   end
 
   def pad23_row(acct,amount)
     text_box acct, at: [20,@cur], width:120,align: :left   
     text_box imoney(amount), at: [210,@cur], width:70,align: :right   
-    @cur -= 9
+    @cur -= 10
   end
 
   def pad33_row(acct,amount)
     text_box acct, at: [30,@cur], width:100,align: :left   
     text_box imoney(amount), at: [140,@cur], width:70,align: :right   
-    @cur -= 9
+    @cur -= 10
   end
 
   def imoney(int,dollar="$")

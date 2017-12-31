@@ -1,4 +1,4 @@
-class Register < Prawn::Document
+class RegisterPdf < Prawn::Document
   attr_accessor :response, :date
 
   def initialize(date,cash)
