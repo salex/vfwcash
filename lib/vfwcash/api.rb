@@ -19,12 +19,8 @@ module Vfwcash
       pdf = Between.new(@date,@cash,from,to)
     end
 
-    def profit_loss(from,to)
-      pl = ProfitLoss.new.generate(from,to)
-    end
-
-    def profit_loss_new(options)
-      @cash.profit_loss(options)
+    def profit_loss(report)
+      pdf = ProfitLoss.new(report)
     end
 
     def ledger

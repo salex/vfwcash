@@ -193,7 +193,7 @@ module Vfwcash
       today = Date.today
       @from = options[:from].nil? ? today.beginning_of_month  : Vfwcash.set_date(options[:from])
       @to = options[:to].nil? ? today.end_of_month  : Vfwcash.set_date(options[:to])
-      level = options[:lev]
+      level = options[:level] ||= options[:lev]
       i = CashAccount.find_by(name:'Income')
       e = CashAccount.find_by(name:'Expenses')
       report = {"Income" => {amount:period_splits(i),total:0,children:{}}, 
