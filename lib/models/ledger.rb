@@ -1,4 +1,4 @@
-class Pdf::Ledger < Prawn::Document
+class Ledger < Prawn::Document
   attr_accessor :response, :date, :cwidths
 
   def initialize(date,cash)

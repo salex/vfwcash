@@ -189,6 +189,39 @@ module Vfwcash
       lines
     end
 
+    def profit_loss(options)
+      today = Date.today
+      @from = options[:from].nil? ? today.beginning_of_month  : Vfwcash.set_date(options[:from])
+      @to = options[:to].nil? ? today.end_of_month  : Vfwcash.set_date(options[:to])
+      level = options[:lev]
+      i = CashAccount.find_by(name:'Income')
+      e = CashAccount.find_by(name:'Expenses')
+      report = {"Income" => {amount:period_splits(i),total:0,children:{}}, 
+      "Expense" =>  {amount:period_splits(e),total:0,children:{}},
+      "options" => {level:level,from:@from,to:@to}}
+      tree(i,report['Income'])
+      tree(e,report['Expense'])
+      return report
+    end
+
+
+    private
+
+    def tree(branch,hash)
+      branch.children.each do |c|
+        hash[:children][c.name] = {amount:period_splits(c),total:0,children: {}}
+        tree(c,hash[:children][c.name])
+        hash[:total] += (hash[:children][c.name][:amount] + hash[:children][c.name][:total])
+      end
+    end
+
+    def period_splits(acct)
+      flipper = acct.account_type == 'INCOME' ? -1 : 1
+      sp = acct.splits.joins(:tran).where('transactions.post_date between ? and ?',@from.strftime('%Y%m%d')+'00',@to.strftime('%Y%m%d')+'24')
+      sp.sum(:value_num) * flipper
+    end
+
+
   end
 
 end

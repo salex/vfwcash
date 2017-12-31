@@ -1,4 +1,4 @@
-class Pdf::Summary < Prawn::Document
+class Summary < Prawn::Document
   attr_accessor :cash, :date, :cwidths
 
   def initialize(cash)

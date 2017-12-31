@@ -1,4 +1,4 @@
-class Pdf::Balance < Prawn::Document
+class Balance < Prawn::Document
   attr_accessor :cash, :date, :cwidths
 
   def initialize(date,cash)

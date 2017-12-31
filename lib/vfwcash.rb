@@ -13,6 +13,7 @@ module Vfwcash
       config = YAML.load_file(ENV['VFWCASHCONFIG'])
     else
       config = YAML.load_file("#{PWD}/config/vfwcash.yml")
+      
     end
     ENV['VFWCASHDATABASE'] = config[:database]
     return config

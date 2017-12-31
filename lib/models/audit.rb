@@ -1,4 +1,3 @@
-module Pdf
 class Audit < Prawn::Document
   attr_accessor :cur, :config, :balances
   def initialize(date,cash)
@@ -224,5 +223,4 @@ class Audit < Prawn::Document
     Vfwcash.money(int)
   end
 
-end
 end

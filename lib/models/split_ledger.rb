@@ -1,4 +1,4 @@
-class Pdf::SplitLedger < Prawn::Document
+class SplitLedger < Prawn::Document
   attr_accessor :response, :date
 
   def initialize(date,cash)

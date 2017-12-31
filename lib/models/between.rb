@@ -1,4 +1,4 @@
-class Pdf::Between < Prawn::Document
+class Between < Prawn::Document
   attr_accessor :cash, :date, :cwidths
 
   def initialize(date,cash,from,to)

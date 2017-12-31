@@ -16,35 +16,39 @@ module Vfwcash
     end
 
     def between(from,to)
-      pdf = Pdf::Between.new(@date,@cash,from,to)
+      pdf = Between.new(@date,@cash,from,to)
     end
 
     def profit_loss(from,to)
       pl = ProfitLoss.new.generate(from,to)
     end
 
+    def profit_loss_new(options)
+      @cash.profit_loss(options)
+    end
+
     def ledger
-      pdf = Pdf::Ledger.new(@date,@cash)
+      pdf = Ledger.new(@date,@cash)
     end
 
     def summary
-      pdf = Pdf::Summary.new(@cash)
+      pdf = Summary.new(@cash)
     end
 
     def register
-      pdf = Pdf::Register.new(@date,@cash)
+      pdf = Register.new(@date,@cash)
     end
 
     def split
-      pdf = Pdf::SplitLedger.new(@date,@cash)
+      pdf = SplitLedger.new(@date,@cash)
     end
 
     def audit
-      pdf = Pdf::Audit.new(@date,@cash)
+      pdf = Audit.new(@date,@cash)
     end
 
     def balance
-      pdf = Pdf::Balance.new(@date,@cash)
+      pdf = Balance.new(@date,@cash)
     end
 
   end

@@ -11,7 +11,7 @@ class CashAccount < SqliteBase
   end
 
   def children
-    CashAccount.where(parent_guid:self.guid)
+    CashAccount.where(parent_guid:self.guid).order(:name)
   end
 
   def account_ledger

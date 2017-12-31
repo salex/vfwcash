@@ -2,6 +2,8 @@ require 'thor'
 # require 'vfwcash/cli/register'
 require 'chronic'
 require 'active_support'
+require 'active_support/core_ext/object/blank'
+require 'active_support/core_ext/date/calculations'
 
 
 module Vfwcash
@@ -14,7 +16,7 @@ module Vfwcash
       puts <<-DATE_HELP
         The DATE parameter is optional on all reports requiring a date and will default to the current date if not present.
 
-        All dates will be converted to the first of the month requardless of the date entered.
+        Most dates will be converted to the first of the month requardless of the date entered.
 
         Entered dates are parsed using Chronic (https://github.com/mojombo/chronic).
         Chronic provide a wide range options.
@@ -48,6 +50,28 @@ module Vfwcash
      def __print_version
        puts "Version: #{Vfwcash::VERSION}"
      end
+
+  ##### profit_loss
+    desc "profit_loss [--lev --from --to]","Generate profit/loss pdf with depth of --lev beteween dates --from and --to"
+    method_option :lev, type: :numeric,
+                           desc: "Depth of account hiearchy",
+                           required: false,
+                           default: 2
+    method_option :from, type: :string,
+                           required: false,
+                           desc: "From date, defaults to first of current month"
+    method_option :to, type: :string,
+                           required: false,
+                           desc: "To date, defaults to end of current month"
+
+    def profit_loss
+      # puts "Generate profit_loss report with options  #{options.inspect}"
+      Controller.new(Date.today).profit_loss(options)
+
+      # api = Api.new(Date.today.beginning_of_month)
+      # pl = api.cash.profit_loss(options)
+      # puts api.cash.profit_loss(options).inspect
+    end
 
   ######### INSTALL
     desc "install [--dir --db]", "Install config files and optional test DB in pwd or pwd/--dir"
