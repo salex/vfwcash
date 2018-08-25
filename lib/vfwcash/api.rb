@@ -3,7 +3,7 @@ module Vfwcash
   class Api
     attr_accessor  :config, :cash
     def initialize(date=nil)
-      @date = date
+      @date = Vfwcash.set_date(date)
       @config = Vfwcash.config
       require_relative './sqlite_base'
       Dir.glob(File.join(LibPath,'models/*')).each do |file|

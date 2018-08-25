@@ -36,13 +36,29 @@ module Vfwcash
       date = Date.today
     elsif date.class == Date
     else
+      # has to be string
       if date.length == 6
         date += '01'
+        date = Date.parse(date)
+      else
+        date = Date.parse(date)
       end
-      date = Date.parse(date)
     end
     date
   end
+
+  def self.str_date_range(from,to)
+    # used for 
+    db = Tran.last.post_date.include?('-')
+    from = Vfwcash.set_date(from)
+    to = Vfwcash.set_date(to)
+    if db
+      return (from.to_s(:db))..(to.to_s(:db))
+    else
+      return (from.to_s(:number))..(to.to_s(:number))
+    end
+  end
+
 
   def self.money(int)
     dollars = int / 100

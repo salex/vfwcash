@@ -217,7 +217,10 @@ module Vfwcash
 
     def period_splits(acct)
       flipper = acct.account_type == 'INCOME' ? -1 : 1
-      sp = acct.splits.joins(:tran).where('transactions.post_date between ? and ?',@from.strftime('%Y%m%d')+'00',@to.strftime('%Y%m%d')+'24')
+      # sp = acct.splits.joins(:tran).where('transactions.post_date between ? and ?',@from.strftime('%Y%m%d')+'00',@to.strftime('%Y%m%d')+'24')
+      sp = acct.splits.joins(:tran).where(transactions:{post_date: Vfwcash.str_date_range(@from,@to)})
+
+
       sp.sum(:value_num) * flipper
     end
 
