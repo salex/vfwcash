@@ -3,12 +3,12 @@ class Split < SqliteBase
   belongs_to :tran, foreign_key: 'tx_guid'
   belongs_to :cash_account, foreign_key: 'account_guid'
   
-  attribute :rdate, :date
-  after_find do |s|
-    if s.reconcile_date.present?
-      s.rdate = Date.parse(s.reconcile_date)
-    end
-  end
+  # attribute :rdate, :date
+  # after_find do |s|
+  #   if s.reconcile_date.present?
+  #     s.rdate = Date.parse(s.reconcile_date)
+  #   end
+  # end
 
   def amount
     return "#{self.value_num / self.value_denom}.#{self.value_num % self.value_denom}"

@@ -52,6 +52,9 @@ module Vfwcash
     db = Tran.last.post_date.include?('-')
     from = Vfwcash.set_date(from)
     to = Vfwcash.set_date(to)
+    from = from.to_datetime.beginning_of_day
+    to = to.to_datetime.end_of_day
+    
     if db
       return (from.to_s(:db))..(to.to_s(:db))
     else
